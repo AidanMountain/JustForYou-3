@@ -7,6 +7,8 @@ import java.awt.*;
  * This class holds some constants like window width/height and resource folder locations
  * Tweak these as needed, they shouldn't break anything (keyword shouldn't).
  */
+
+ //github test comment
 public class Config {
     public static final int FPS = 100;
     public static final String RESOURCES_PATH = "Resources/";
