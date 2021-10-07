@@ -529,7 +529,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public static void playTheMusic()
     {
 
-        String filePath = "Resources/MakafushigiAdventure.wav";
+        String filePath = "Resources/GameMusic.wav";
         MusicData musicObject = new MusicData();
         musicObject.playMusic(filePath, vol);
 
