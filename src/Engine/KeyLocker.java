@@ -1,6 +1,7 @@
 package Engine;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 // This class can be used to keep track of "locked" and "unlocked" keys based on the class
 // For example, it's often useful to "lock" a key if pressed down until its been released, since holding down a key will continually count as a "key press".
@@ -23,4 +24,5 @@ public class KeyLocker {
     public boolean isKeyLocked(Key key) {
         return lockedKeys.contains(key);
     }
+
 }
