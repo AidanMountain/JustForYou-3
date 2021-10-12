@@ -1,8 +1,8 @@
 package Level;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
@@ -23,6 +23,13 @@ public class NPC extends MapEntity {
 	public NPC(float x, float y, SpriteSheet spriteSheet, String startingAnimation, int talkedToTime) {
 		super(x, y, spriteSheet, startingAnimation);
 		this.message = createMessage();
+		this.talkedToTime = talkedToTime;
+	}
+	
+	public NPC(float x, float y, SpriteSheet spriteSheet, String startingAnimation, int talkedToTime, String speech) {
+		super(x, y, spriteSheet, startingAnimation);
+		this.message = createMessage();
+		this.message.setText(speech);
 		this.talkedToTime = talkedToTime;
 	}
 
@@ -64,7 +71,7 @@ public class NPC extends MapEntity {
 	}
 
 	protected SpriteFont createMessage() {
-		return null;
+		return new SpriteFont("default", getX(), getY() - 10, "Arial", 12, Color.BLACK);
 	}
 
 	public void update(Player player) {
@@ -91,8 +98,16 @@ public class NPC extends MapEntity {
 		}
 	}
 
-	// A subclass can override this method to specify what message it displays upon
-	// being talked to
 	public void drawMessage(GraphicsHandler graphicsHandler) {
+		// draws a box with a border (think like a speech box)
+		graphicsHandler.drawFilledRectangleWithBorderAndText(Math.round(getCalibratedXLocation() - 2), Math.round(getCalibratedYLocation() - 24), 25, Color.WHITE, Color.BLACK, 2, message.getText());
+				
+		// draws message in the above speech box
+		message.setLocation(getCalibratedXLocation() + 2, getCalibratedYLocation() - 8);
+		message.draw(graphicsHandler);
 	}
+	
+	public boolean getTalkedTo(){ return talkedTo;}
+	
 }
+
