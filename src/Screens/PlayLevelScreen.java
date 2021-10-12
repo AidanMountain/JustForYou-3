@@ -353,13 +353,13 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             }
 
         
-        if (Keyboard.isKeyUp(Key.SPACE))
+        if (Keyboard.isKeyUp(Key.ENTER))
         {
-            keyLocker.unlockKey(Key.SPACE);
+            keyLocker.unlockKey(Key.ENTER);
         }
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE))
+        if (!keyLocker.isKeyLocked(Key.ENTER) && Keyboard.isKeyDown(Key.ENTER))
         {
-        	keyLocker.lockKey(Key.SPACE);
+        	keyLocker.lockKey(Key.ENTER);
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 1)
             {
