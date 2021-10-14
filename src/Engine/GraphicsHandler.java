@@ -60,6 +60,11 @@ public class GraphicsHandler {
         drawFilledRectangle(x, y, width, height, fillColor);
         drawRectangle(x, y, width, height, borderColor, borderThickness);
     }
+    
+    public void drawFilledRectangleWithBorderAndText(int x, int y, int height, Color fillColor, Color borderColor, int borderThickness, String text) {
+        drawFilledRectangle(x, y, g.getFontMetrics().stringWidth(text) + 8, height, fillColor);
+        drawRectangle(x, y, g.getFontMetrics().stringWidth(text) + 8, height, borderColor, borderThickness);
+    }
 
     public void drawString(String text, int x, int y, Font font, Color color) {
         g.setFont(font);
