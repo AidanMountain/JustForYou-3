@@ -88,6 +88,20 @@ public abstract class Player extends GameObject {
         if (levelState == LevelState.RUNNING) {
             applyGravity();
 
+            //prevents user from walking off the edge of the map (fix for map boundaries)
+            if(super.x < 0 - map.tileset.getScaledSpriteWidth()/2) {
+                super.x += 0;
+                if(Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+                    moveAmountX += walkSpeed;
+                }
+            }
+            if(super.x > map.endBoundX - map.tileset.getScaledSpriteWidth()) {
+                super.x -= 0;
+                if(Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+                    moveAmountX -= walkSpeed;
+                }
+            }
+
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
             do {
                 previousPlayerState = playerState;
@@ -105,14 +119,6 @@ public abstract class Player extends GameObject {
             super.moveXHandleCollision(moveAmountX);
 
             updateLockedKeys();
-
-            // boundaries stopping the cat from falling off the map
-            if (x <= super.getStartBoundX()) {
-                x = previousX;
-            }
-            else if (x >= super.getEndBoundX() - 60) {
-                x = previousX;
-            }
         }
 
         // if player has beaten level
