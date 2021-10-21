@@ -59,7 +59,7 @@ public class Mouse extends Enemy {
 			}
 		}
 
-		// move bug
+		// move mouse
 		moveYHandleCollision(moveAmountY);
 		moveXHandleCollision(moveAmountX);
 
