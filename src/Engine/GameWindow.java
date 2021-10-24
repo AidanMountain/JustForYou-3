@@ -20,6 +20,9 @@ public class GameWindow {
 	private Config config;
 	private PlayLevelScreen pLS;
 
+	//////////////
+	private InputManager inputManager;
+
 	public GameWindow() {
 		gameWindow = new JFrame("Game");
 		gamePanel = new GamePanel();
@@ -35,6 +38,8 @@ public class GameWindow {
 		gameWindow.setVisible(true);
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // it'd be nice if this actually worked more than 1/3rd of the time
 		gamePanel.setupGame();
+
+		inputManager = new InputManager(gamePanel);
 
 	}
 	// triggers the game loop to start as defined in the GamePanel class
@@ -54,11 +59,13 @@ public class GameWindow {
 	}
 	public void update()
 	{
-
+		inputManager.CheckFocusInput();
 	}
 
 	public ScreenManager getScreenManager() {
 		return gamePanel.getScreenManager();
 	}
+
+	public InputManager getInputManager() { return inputManager; }
 
 }

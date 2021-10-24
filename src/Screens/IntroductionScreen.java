@@ -20,6 +20,8 @@ public class IntroductionScreen extends Screen {
 
     @Override
     public void initialize() {
+        screenCoordinator.getGameWindow().getInputManager().setKeyLocker(keyLocker);
+
         /*
         todo: fix intro story
          */

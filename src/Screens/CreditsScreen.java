@@ -25,6 +25,8 @@ public class CreditsScreen extends Screen {
 
     @Override
     public void initialize() {
+        screenCoordinator.getGameWindow().getInputManager().setKeyLocker(keyLocker);
+
         // setup graphics on screen (background map, spritefont text)
         background = new TitleScreenMap();
         background.setAdjustCamera(false);

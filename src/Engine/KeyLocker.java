@@ -25,4 +25,11 @@ public class KeyLocker {
         return lockedKeys.contains(key);
     }
 
+    public void ClearLocked(){
+        for(Key key : lockedKeys){
+            unlockKey(key);
+        }
+    }
+
+
 }

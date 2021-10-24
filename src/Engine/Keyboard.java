@@ -1,11 +1,8 @@
 package Engine;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.awt.event.ActionEvent;
 /*
  * This class is used throughout the engine for detecting keyboard state
  * This includes if a key is pressed, if a key is not pressed, and if multiple keys are pressed/not pressed at the same time
@@ -19,59 +16,9 @@ public class Keyboard {
 	// maps a Key enum type to its key code
 	private static final EnumMap<Key, Integer> keyMap = buildKeyMap();
 
-	private static final KeyListener keyListener = new KeyListener() {
-        @Override
-        public void keyTyped(KeyEvent e) {}
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-        	// when key is pressed, set its keyDown state to true and its keyUp state to false
-            int keyCode = e.getKeyCode();
-            keyDown.put(keyCode, true);
-            keyUp.put(keyCode, false);
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-			// when key is released, set its keyDown state to false and its keyUp state to true
-			int keyCode = e.getKeyCode();
-            keyDown.put(keyCode, false);
-            keyUp.put(keyCode, true);
-        }
-    };
-
-	///////////////////////////////////////// TEST CODE //////////////////////////////////////////////////////////
-
-    Action keyDownAction = new AbstractAction(){
-
-        public void KeyPressed(Key key){
-            keyDown.put(keyMap.get(key), true);
-            keyUp.put(keyMap.get(key), false);
-        }
-
-        public void actionPerformed(ActionEvent e){}
-    };
-
-    Action keyUpAction = new AbstractAction(){
-        public void KeyLetGo(Key key){
-            keyDown.put(keyMap.get(key), false);
-            keyUp.put(keyMap.get(key), true);
-        }
-
-        public void actionPerformed(ActionEvent e){}
-    };
-
-    //NEED REFERENCE TO GAME WINDOW
-    //NEED TO FIGURE OUT HOW TO GET KEY UP
-
-    ///////////////////////////////////////// END TEST CODE /////////////////////////////////////////////////////
-
 	// prevents Keyboard from being instantiated -- it's my way of making a "static" class like C# has
-	private Keyboard() { }
-    
-    public static KeyListener getKeyListener() {
-    	return keyListener;
-    }
+	private Keyboard() {}
+
 
     // returns if a key is currently being pressed
     public static boolean isKeyDown(Key key) {
@@ -102,6 +49,13 @@ public class Keyboard {
     	}
     	return true;
     }
+
+    public static void ClearDown(){
+		for(int keyCode : keyDown.keySet()){
+			keyDown.put(keyCode, false);
+			keyUp.put(keyCode, true);
+		}
+	}
 
     // maps a Key enum type to its keycode
 	// Java keycodes were found here: https://stackoverflow.com/a/31637206
@@ -154,4 +108,16 @@ public class Keyboard {
 				 put(Key.ESC, 27);
 			}};
     }
+    public static void setKeyDown(Key key){
+		keyDown.put(keyMap.get(key), true);
+		keyUp.put(keyMap.get(key), false);
+	}
+
+	public static void setKeyUp(Key key){
+		keyDown.put(keyMap.get(key), false);
+		keyUp.put(keyMap.get(key), true);
+	}
+
 }
+
+

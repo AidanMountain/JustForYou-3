@@ -120,6 +120,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void initialize() {
         // define/setup map
 
+        gameWindow.getInputManager().setKeyLocker(keyLocker);
+
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map

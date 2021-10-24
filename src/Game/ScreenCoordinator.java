@@ -79,8 +79,10 @@ public class ScreenCoordinator extends Screen {
 
 				}
 			}
+
 			// call the update method for the currentScreen
 			currentScreen.update();
+			gameWindow.update();
 		} while (previousGameState != gameState);
 	}
 
@@ -90,4 +92,5 @@ public class ScreenCoordinator extends Screen {
 		currentScreen.draw(graphicsHandler);
 	}
 
+	public GameWindow getGameWindow() {return gameWindow;}
 }
