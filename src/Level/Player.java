@@ -198,6 +198,9 @@ public abstract class Player extends GameObject {
         File walk = new File("Resources/Walk.wav");
         // sets animation to a WALK animation based on which way player is facing
         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
+        
+        if(underwater){walkSpeed = 1.6f;}
+        else{walkSpeed = 3.6f;}
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
@@ -283,6 +286,11 @@ public abstract class Player extends GameObject {
 
     // player JUMPING state logic
     protected void playerJumping() {
+    	
+    	if(underwater){jumpHeight = 8; jumpDegrade = .3f; terminalVelocityY = 1.5f
+    	        ;}
+    	        else{jumpHeight = 14.5f; jumpDegrade = .5f; terminalVelocityY = 6;}
+    	
         File jump = new File("Resources/Jump.wav");
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
@@ -328,6 +336,22 @@ public abstract class Player extends GameObject {
             // if player is falling, increases momentum as player falls so it falls faster over time
             if (moveAmountY > 0) {
                 increaseMomentum();
+            }
+            
+            if(underwater){
+                // if jump key is pressed underwater, player swims up
+                if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+                    keyLocker.lockKey(JUMP_KEY);
+                    airGroundState = AirGroundState.AIR;
+                    jumpForce = jumpHeight;
+                    if (jumpForce > 0) {
+                        moveAmountY -= jumpForce;
+                        jumpForce -= jumpDegrade;
+                        if (jumpForce < 0) {
+                            jumpForce = 0;
+                        }
+                    }
+                }
             }
         }
 

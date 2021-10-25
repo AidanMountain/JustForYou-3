@@ -21,7 +21,7 @@ public class Cat extends Player {
 		terminalVelocityY = 6f;
 		jumpHeight = 14.5f;
 		jumpDegrade = .5f;
-		walkSpeed = 2.1f;
+		walkSpeed = 3.6f;
 		momentumYIncrease = .5f;
 		JUMP_KEY = Key.UP;
 		MOVE_LEFT_KEY = Key.LEFT;

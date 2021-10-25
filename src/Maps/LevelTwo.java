@@ -6,6 +6,8 @@ import Enemies.LawnMowerOfDeath;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
+import EnhancedMapTiles.SkyWater;
+import EnhancedMapTiles.Water;
 import GameObject.Rectangle;
 import Level.*;
 
@@ -59,8 +61,8 @@ public class LevelTwo extends Map {
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(34, 18),
-                getPositionByTileIndex(35, 18),
+                getPositionByTileIndex(34, 19),
+                getPositionByTileIndex(35, 19),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
                 new Rectangle(0, 6,16,4),
@@ -141,6 +143,28 @@ public class LevelTwo extends Map {
                 getPositionByTileIndex(121, 15)
         ));
 
+        for(int i = 0; i < 30; i++) {
+        	enhancedMapTiles.add(new SkyWater(
+        			getPositionByTileIndex(31 + i, 18)
+        	));
+        	for(int j = 0; j < 4; j++) {
+                enhancedMapTiles.add(new Water(
+                        getPositionByTileIndex(31 + i, 19 + j)
+                ));
+            }
+        }
+        
+        for(int i = 0; i < 10; i++) {
+        	enhancedMapTiles.add(new SkyWater(
+        			getPositionByTileIndex(97 + i, 18)
+        	));
+        	for(int j = 0; j < 4; j++) {
+                enhancedMapTiles.add(new Water(
+                        getPositionByTileIndex(97 + i, 19 + j)
+                ));
+            }
+        }
+        
         return enhancedMapTiles;
     }
 
