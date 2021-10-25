@@ -47,6 +47,7 @@ public abstract class Player extends GameObject {
     protected PowerState previousPowerState;
     protected LevelState levelState;
     protected boolean unlockedPowerUpOne = false;
+    protected boolean underwater;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -75,6 +76,7 @@ public abstract class Player extends GameObject {
         powerState = PowerState.SAFE;
         previousPowerState = powerState;
         levelState = LevelState.RUNNING;
+        underwater = false;
 
         File jumpSound = new File("Jump.wav");
         File walkSound = new File("Walking on concrete sound effect YouTube.wav");
@@ -131,6 +133,9 @@ public abstract class Player extends GameObject {
             updatePlayerDead();
         }
     }
+    
+    // set swimming state on player for water tiles
+    public void setPlayerSwimming(boolean setState){underwater = setState;}
 
     // add gravity to player, which is a downward force
     protected void applyGravity() {
