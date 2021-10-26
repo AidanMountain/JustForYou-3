@@ -1,27 +1,27 @@
 package Screens;
 
-import Engine.*;
-import Game.GameState;
-import Game.ScreenCoordinator;
-import Level.*;
-import Maps.LevelFour;
-import Maps.LevelThree;
-import Maps.LevelTwo;
-import Maps.LevelOne;
-import Players.Cat;
-import SpriteFont.SpriteFont;
-import Utils.Stopwatch;
-import Engine.GameWindow;
-import Screens.RebuildScreen;
+        import Engine.*;
+        import Game.GameState;
+        import Game.ScreenCoordinator;
+        import Level.*;
+        import Maps.LevelFour;
+        import Maps.LevelThree;
+        import Maps.LevelTwo;
+        import Maps.LevelOne;
+        import Players.Cat;
+        import SpriteFont.SpriteFont;
+        import Utils.Stopwatch;
+        import Engine.GameWindow;
+        import Screens.RebuildScreen;
 
-import java.awt.*;
+        import java.awt.*;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.swing.JOptionPane;
+        import javax.sound.sampled.AudioInputStream;
+        import javax.sound.sampled.AudioSystem;
+        import javax.sound.sampled.Clip;
+        import javax.sound.sampled.FloatControl;
+        import javax.sound.sampled.LineUnavailableException;
+        import javax.swing.JOptionPane;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
@@ -62,7 +62,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected SpriteFont bigScreen;
     protected Stopwatch keyTimer = new Stopwatch();
     protected int pointerLocationX, pointerLocationY;
-    
+
     //settings menu
     protected boolean settingsActive = false;
     protected boolean volActive = false;
@@ -71,7 +71,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public boolean screenM = false;
     public boolean screenL = false;
     protected SpriteFont volumeLevel;
-    
+
     protected SpriteFont aspectRatioLevel;
 
 
@@ -119,6 +119,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
+
+        gameWindow.getInputManager().setKeyLocker(keyLocker);
 
         switch (currentLevel) {
             case 0:
@@ -204,52 +206,52 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     break;
             }
         }
-   
+
         if(isGamePaused == true)
         {
-        	if(settingsActive == false) 
-        	{
-        		if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp())
-        		{
-        			keyTimer.reset();
-        			currentMenuItemHovered++;
-        		}
-        		else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp())
-        		{
-        			keyTimer.reset();
-        			currentMenuItemHovered--;
-        		} 
-        	}
-        	if(settingsActive == true) 
-        	{
-
-        		if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp())
-            	{
-            		keyTimer.reset();
-            		settingsMenuItemSelected++;
-            	}
-            	else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp())
-            	{
-            		keyTimer.reset();
-            		settingsMenuItemSelected--;
-            	}
-        		if (Keyboard.isKeyDown(Key.RIGHT) && keyTimer.isTimeUp())
+            if(settingsActive == false)
+            {
+                if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp())
                 {
-                	keyTimer.reset();
-                	currentSettingLevelHovered++;
+                    keyTimer.reset();
+                    currentMenuItemHovered++;
+                }
+                else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp())
+                {
+                    keyTimer.reset();
+                    currentMenuItemHovered--;
+                }
+            }
+            if(settingsActive == true)
+            {
+
+                if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp())
+                {
+                    keyTimer.reset();
+                    settingsMenuItemSelected++;
+                }
+                else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp())
+                {
+                    keyTimer.reset();
+                    settingsMenuItemSelected--;
+                }
+                if (Keyboard.isKeyDown(Key.RIGHT) && keyTimer.isTimeUp())
+                {
+                    keyTimer.reset();
+                    currentSettingLevelHovered++;
                 }
                 else if (Keyboard.isKeyDown(Key.LEFT) && keyTimer.isTimeUp())
                 {
-                	keyTimer.reset();
-                	currentSettingLevelHovered--;
-                }	
-        	}
+                    keyTimer.reset();
+                    currentSettingLevelHovered--;
+                }
+            }
 
-       
-        	 // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
+
+            // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
             if (currentMenuItemHovered > 1)
             {
-            	currentMenuItemHovered = 2;
+                currentMenuItemHovered = 2;
             }
             else if (currentMenuItemHovered < 1)
             {
@@ -257,102 +259,102 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             }
             if (settingsMenuItemSelected > 1)
             {
-            	settingsMenuItemSelected = 2;
+                settingsMenuItemSelected = 2;
             }
             else if (settingsMenuItemSelected < 1)
             {
-            	settingsMenuItemSelected = 1;
+                settingsMenuItemSelected = 1;
             }
             if (currentSettingLevelHovered > 2)
             {
-            	currentSettingLevelHovered = 0;
+                currentSettingLevelHovered = 0;
             }
             else if (currentSettingLevelHovered < 0)
             {
-            	currentSettingLevelHovered = 2;
+                currentSettingLevelHovered = 2;
             }
             // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
             if (currentMenuItemHovered == 1)
             {
-            	pauseHeader.setColor(new Color(255, 255, 255));
-            	settingsButton.setColor(new Color(255, 215, 0));
+                pauseHeader.setColor(new Color(255, 255, 255));
+                settingsButton.setColor(new Color(255, 215, 0));
                 mainMenuButton.setColor(new Color(49, 207, 240));
                 pointerLocationX = 100;
                 pointerLocationY = 230;
             }
             if (currentMenuItemHovered == 2)
             {
-            	pauseHeader.setColor(new Color(255, 255, 255));
-            	settingsButton.setColor(new Color(49, 207, 240));
-            	mainMenuButton.setColor(new Color(255, 215, 0));
+                pauseHeader.setColor(new Color(255, 255, 255));
+                settingsButton.setColor(new Color(49, 207, 240));
+                mainMenuButton.setColor(new Color(255, 215, 0));
                 pointerLocationX = 90;
                 pointerLocationY = 310;
             }
             if (settingsMenuItemSelected == 1 && settingsActive == true)
             {
-            	volActive = true;
-            	smallScreen.setColor(new Color(49, 207, 240));
-            	mediumScreen.setColor(new Color(49, 207, 240));
-            	bigScreen.setColor(new Color(49, 207, 240));
-            	if(currentSettingLevelHovered == 0) 
-            	{
-            		lowVol.setColor(new Color(255, 215, 0));
-                	midVol.setColor(new Color(49, 207, 240));
-                	HighVol.setColor(new Color(49, 207, 240));
-                	pointerLocationX = 330;
+                volActive = true;
+                smallScreen.setColor(new Color(49, 207, 240));
+                mediumScreen.setColor(new Color(49, 207, 240));
+                bigScreen.setColor(new Color(49, 207, 240));
+                if(currentSettingLevelHovered == 0)
+                {
+                    lowVol.setColor(new Color(255, 215, 0));
+                    midVol.setColor(new Color(49, 207, 240));
+                    HighVol.setColor(new Color(49, 207, 240));
+                    pointerLocationX = 330;
                     pointerLocationY = 225;
-            	}
-            	if(currentSettingLevelHovered == 1) 
-            	{
-            		lowVol.setColor(new Color(49, 207, 240));
-                	midVol.setColor(new Color(255, 215, 0));
-                	HighVol.setColor(new Color(49, 207, 240));
-                	pointerLocationX = 470;
+                }
+                if(currentSettingLevelHovered == 1)
+                {
+                    lowVol.setColor(new Color(49, 207, 240));
+                    midVol.setColor(new Color(255, 215, 0));
+                    HighVol.setColor(new Color(49, 207, 240));
+                    pointerLocationX = 470;
                     pointerLocationY = 225;
-            	}
-            	if(currentSettingLevelHovered == 2) 
-            	{
-            		lowVol.setColor(new Color(49, 207, 240));
-                	midVol.setColor(new Color(49, 207, 240));
-                	HighVol.setColor(new Color(255, 215, 0));
-                	pointerLocationX = 640;
+                }
+                if(currentSettingLevelHovered == 2)
+                {
+                    lowVol.setColor(new Color(49, 207, 240));
+                    midVol.setColor(new Color(49, 207, 240));
+                    HighVol.setColor(new Color(255, 215, 0));
+                    pointerLocationX = 640;
                     pointerLocationY = 225;
-            	}
-                
+                }
+
             }
             else if (settingsMenuItemSelected == 2 && settingsActive == true)
             {
-            	lowVol.setColor(new Color(49, 207, 240));
-            	midVol.setColor(new Color(49, 207, 240));
-            	HighVol.setColor(new Color(49, 207, 240));
-            	aspectActive = true;
-            	if(currentSettingLevelHovered == 0) 
-            	{
-            		smallScreen.setColor(new Color(255, 215, 0));
-                	mediumScreen.setColor(new Color(49, 207, 240));
-                	bigScreen.setColor(new Color(49, 207, 240));
-                	pointerLocationX = 330;
+                lowVol.setColor(new Color(49, 207, 240));
+                midVol.setColor(new Color(49, 207, 240));
+                HighVol.setColor(new Color(49, 207, 240));
+                aspectActive = true;
+                if(currentSettingLevelHovered == 0)
+                {
+                    smallScreen.setColor(new Color(255, 215, 0));
+                    mediumScreen.setColor(new Color(49, 207, 240));
+                    bigScreen.setColor(new Color(49, 207, 240));
+                    pointerLocationX = 330;
                     pointerLocationY = 350;
-            	}
-            	if(currentSettingLevelHovered == 1) 
-            	{
-            		smallScreen.setColor(new Color(49, 207, 240));
-                	mediumScreen.setColor(new Color(255, 215, 0));
-                	bigScreen.setColor(new Color(49, 207, 240));
-                	pointerLocationX = 460;
+                }
+                if(currentSettingLevelHovered == 1)
+                {
+                    smallScreen.setColor(new Color(49, 207, 240));
+                    mediumScreen.setColor(new Color(255, 215, 0));
+                    bigScreen.setColor(new Color(49, 207, 240));
+                    pointerLocationX = 460;
                     pointerLocationY = 350;
-            	}
-            	if(currentSettingLevelHovered == 2) 
-            	{
-            		smallScreen.setColor(new Color(49, 207, 240));
-                	mediumScreen.setColor(new Color(49, 207, 240));
-                	bigScreen.setColor(new Color(255, 215, 0));
-                	pointerLocationX = 630;
+                }
+                if(currentSettingLevelHovered == 2)
+                {
+                    smallScreen.setColor(new Color(49, 207, 240));
+                    mediumScreen.setColor(new Color(49, 207, 240));
+                    bigScreen.setColor(new Color(255, 215, 0));
+                    pointerLocationX = 630;
                     pointerLocationY = 350;
-            	}  
+                }
             }
 
-        
+
         if (Keyboard.isKeyUp(Key.ENTER))
         {
             keyLocker.unlockKey(Key.ENTER);
@@ -366,60 +368,58 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 if(settingsActive == false)
                 {
                     settingsActive = true;
+                    else if(settingsActive == true)
+                    {
+                        //settingsActive = false;
+                        if (settingsMenuItemSelected == 1)
+                        {
+                            if(currentSettingLevelHovered == 0)
+                            {
+                                setVolLow();
+                                settingsActive = false;
+                            }
+                            if(currentSettingLevelHovered == 1)
+                            {
+                                setVolMid();
+                                settingsActive = false;
 
+                            }
+                            if(currentSettingLevelHovered == 2)
+                            {
+                                setVolFull();
+                                settingsActive = false;
+                            }
+                        }
+                        else if (settingsMenuItemSelected == 2)
+                        {
+                            if(currentSettingLevelHovered == 0)
+                            {
+
+                                setScreenSmall();
+                                settingsActive = false;
+
+                                //gW.setBoundsSmall();
+                            }
+                            if(currentSettingLevelHovered == 1)
+                            {
+                                setScreenMid();
+                                settingsActive = false;
+                                //gW.setBoundsMedium();
+                            }
+                            if(currentSettingLevelHovered == 2)
+                            {
+                                setScreenLarge();
+                                settingsActive = false;
+                            }
+                        }
+                    }
                 }
-                else if(settingsActive == true)
+                else if (menuItemSelected == 2)
                 {
-                    //settingsActive = false;
-                    if (settingsMenuItemSelected == 1)
-                    {
-                        if(currentSettingLevelHovered == 0)
-                        {
-                            setVolLow();
-                            settingsActive = false;
-                        }
-                        if(currentSettingLevelHovered == 1)
-                        {
-                            setVolMid();
-                            settingsActive = false;
-
-                        }
-                        if(currentSettingLevelHovered == 2)
-                        {
-                            setVolFull();
-                            settingsActive = false;
-                        }
-                    }
-                    else if (settingsMenuItemSelected == 2)
-                    {
-                        if(currentSettingLevelHovered == 0)
-                        {
-
-                            setScreenSmall();
-                            settingsActive = false;
-
-                            //gW.setBoundsSmall();
-                        }
-                        if(currentSettingLevelHovered == 1)
-                        {
-                            setScreenMid();
-                            settingsActive = false;
-                            //gW.setBoundsMedium();
-                        }
-                        if(currentSettingLevelHovered == 2)
-                        {
-                            setScreenLarge();
-                            settingsActive = false;
-                        }
-                    }
+                    screenCoordinator.setGameState(GameState.MENU);
                 }
-            }
-            else if (menuItemSelected == 2)
-            {
-                screenCoordinator.setGameState(GameState.MENU);
             }
         }
-      }
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
@@ -446,22 +446,22 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             mainMenuButton.draw(graphicsHandler);
             graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
             if(settingsActive == false)
-        	{
-            	pauseHeader.draw(graphicsHandler);
+            {
+                pauseHeader.draw(graphicsHandler);
                 settingsButton.draw(graphicsHandler);
                 mainMenuButton.draw(graphicsHandler);
-        	}
-        	else if(settingsActive == true)
-        	{
-        		volumeLevel.draw(graphicsHandler);
-        		aspectRatioLevel.draw(graphicsHandler);
-        		lowVol.draw(graphicsHandler);
-        		midVol.draw(graphicsHandler);
-        		HighVol.draw(graphicsHandler);
-        		smallScreen.draw(graphicsHandler);
-        		mediumScreen.draw(graphicsHandler);
-        		bigScreen.draw(graphicsHandler);
-        	}
+            }
+            else if(settingsActive == true)
+            {
+                volumeLevel.draw(graphicsHandler);
+                aspectRatioLevel.draw(graphicsHandler);
+                lowVol.draw(graphicsHandler);
+                midVol.draw(graphicsHandler);
+                HighVol.draw(graphicsHandler);
+                smallScreen.draw(graphicsHandler);
+                mediumScreen.draw(graphicsHandler);
+                bigScreen.draw(graphicsHandler);
+            }
         }
 
     }
@@ -493,37 +493,37 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         System.out.println("Current Vol: " + vol);
     }
 
-    public void setScreenSmall() 
+    public void setScreenSmall()
     {
-    	screenS = true;
-		screenM = false;
-		screenL = false;
-		config.WIDTH = 800;
-		config.HEIGHT = 605;
+        screenS = true;
+        screenM = false;
+        screenL = false;
+        config.WIDTH = 800;
+        config.HEIGHT = 605;
         Camera.setMultiplyInt(140);
-		gameWindow.paintWindow();
-		
+        gameWindow.paintWindow();
+
     }
-    public void setScreenMid() 
+    public void setScreenMid()
     {
-    	screenS = false;
-		screenM = true;
-		screenL = false;
-		config.WIDTH = 950;
-		config.HEIGHT = 705;
+        screenS = false;
+        screenM = true;
+        screenL = false;
+        config.WIDTH = 950;
+        config.HEIGHT = 705;
         Camera.setMultiplyInt(240);
-		gameWindow.paintWindow();
+        gameWindow.paintWindow();
     }
-    public void setScreenLarge() 
+    public void setScreenLarge()
     {
-		screenS = false;
-		screenM = false;
-		screenL = true;
-		
-		config.WIDTH = 1100;
-		config.HEIGHT = 710;
-		Camera.setMultiplyInt(310);
-		gameWindow.paintWindow();
+        screenS = false;
+        screenM = false;
+        screenL = true;
+
+        config.WIDTH = 1100;
+        config.HEIGHT = 710;
+        Camera.setMultiplyInt(310);
+        gameWindow.paintWindow();
     }
 
     public static void playTheMusic()
@@ -553,9 +553,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.MENU);
     }
 
+    public PlayLevelScreenState GetPlayLevelState() {return playLevelScreenState;}
+
+    public void Pause(){
+        isGamePaused = true;
+    }
 
     // This enum represents the different states this screen can be in
-    private enum PlayLevelScreenState {
+    // maybe should find way to make it not public
+    public static enum PlayLevelScreenState {
         RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE,
     }
+
 }

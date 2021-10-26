@@ -1,10 +1,7 @@
 package Game;
 
-import Engine.DefaultScreen;
+import Engine.*;
 
-import Engine.GameWindow;
-import Engine.GraphicsHandler;
-import Engine.Screen;
 import Screens.CreditsScreen;
 import Screens.IntroductionScreen;
 import Screens.InstructionScreen;
@@ -25,7 +22,7 @@ public class ScreenCoordinator extends Screen {
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
 	protected GameState gameState;
 	protected GameState previousGameState;
-	public ScreenCoordinator(GameWindow gameWindow) 
+	public ScreenCoordinator(GameWindow gameWindow)
 	{
 		this.gameWindow = gameWindow;
 	}
@@ -73,9 +70,19 @@ public class ScreenCoordinator extends Screen {
 				currentScreen.initialize();
 			}
 			previousGameState = gameState;
+			if(!GameWindow.gameWindow.isFocused() && gameState.equals(GameState.LEVEL)){
+				//if(((PlayLevelScreen) currentScreen).)
+				if(((PlayLevelScreen) currentScreen).getPlayLevelScreenState() !=
+						PlayLevelScreen.PlayLevelScreenState.LEVEL_LOSE_MESSAGE){
+
+					((PlayLevelScreen) currentScreen).Pause();
+
+				}
+			}
 
 			// call the update method for the currentScreen
 			currentScreen.update();
+			gameWindow.update();
 		} while (previousGameState != gameState);
 	}
 
@@ -84,4 +91,6 @@ public class ScreenCoordinator extends Screen {
 		// call the draw method for the currentScreen
 		currentScreen.draw(graphicsHandler);
 	}
+
+	public GameWindow getGameWindow() {return gameWindow;}
 }
