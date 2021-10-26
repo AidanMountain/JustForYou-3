@@ -7,14 +7,10 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Players.Hairball;
 import Utils.*;
-import javax.sound.sampled.AudioInputStream;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import java.applet.AudioClip;
 import java.io.File;
 
 import java.util.ArrayList;
@@ -59,7 +55,7 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
     //powerup attack
     protected Key POWERUP_ONE_KEY = Key.ONE;
-    protected Stopwatch coolDownTimer = new Stopwatch();
+    protected Stopwatch shootCoolDownTimer = new Stopwatch();
 
     // if true, player cannot be hurt by enemies (good for testing)
     //TODO: Where to set god mode
@@ -113,6 +109,11 @@ public abstract class Player extends GameObject {
             else if (x >= super.getEndBoundX() - 60) {
                 x = previousX;
             }
+
+            if(keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { UnlockPowerOneKey(); }
+            if(Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)){
+                shoot();
+            }
         }
 
         // if player has beaten level
@@ -146,9 +147,6 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
-            case POWERUP_ONE:
-                playerPowerUp();
-                break;
         }
     }
 
@@ -173,11 +171,6 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
             walkSoundPlayed = false;
-        } else if (getUnlockedPowerUpOne()) {
-            if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
-                powerState = PowerState.SAFE;
-                playerState = PlayerState.POWERUP_ONE;
-            }
         }
 
     }
@@ -238,35 +231,6 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
-        }
-    }
-
-    protected void playerPowerUp() {
-
-        if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
-            int hairballX;
-            float movementSpeed;
-            if (facingDirection == Direction.RIGHT) {
-                hairballX = Math.round(getX()) + getScaledWidth();
-                movementSpeed = 1.5f;
-            } else {
-                hairballX = Math.round(getX());
-                movementSpeed = -1.5f;
-            }
-
-            // define where hairball will spawn on the map (y location) relative to player's location
-            int hairballY = Math.round(getY()) + 20;
-
-            //create a Hairball enemy
-            Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
-
-            // add hairball enemy to the map for it to offically spawn in the level
-            map.addPowerUp(hairball);
-            powerState = PowerState.FIRE;
-        }
-
-        if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
-            playerState = PlayerState.STANDING;
         }
     }
 
@@ -516,5 +480,42 @@ public abstract class Player extends GameObject {
         gain.setValue(dB);
     }
 
+    private void shoot(){
+        if (getUnlockedPowerUpOne() && playerState != PlayerState.POWERUP_ONE) {
+
+            powerState = PowerState.SAFE;
+
+            if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
+                int hairballX;
+                float movementSpeed;
+                if (facingDirection == Direction.RIGHT) {
+                    hairballX = Math.round(getX()) + getScaledWidth();
+                    movementSpeed = 1.5f;
+                } else {
+                    hairballX = Math.round(getX());
+                    movementSpeed = -1.5f;
+                }
+
+                // define where hairball will spawn on the map (y location) relative to player's location
+
+                int hairballY = Math.round(getY()) + 20;
+                if(playerState == PlayerState.CROUCHING) hairballY += 10;
+
+                //create a Hairball enemy
+                Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
+
+                // add hairball enemy to the map for it to offically spawn in the level
+                map.addPowerUp(hairball);
+                powerState = PowerState.FIRE;
+                keyLocker.lockKey(POWERUP_ONE_KEY);
+            }
+        }
+    }
+
+    private void UnlockPowerOneKey(){
+        if(Keyboard.isKeyUp(POWERUP_ONE_KEY)){
+            keyLocker.unlockKey(POWERUP_ONE_KEY);
+        }
+    }
 
 }
