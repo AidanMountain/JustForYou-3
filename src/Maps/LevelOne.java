@@ -3,7 +3,7 @@ package Maps;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Engine.ImageLoader;
-import EnhancedMapTiles.EndLevelBox;
+import EnhancedMapTiles.*;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
@@ -45,6 +45,17 @@ public class LevelOne extends Map {
         enhancedMapTiles.add(new EndLevelBox(
                 getPositionByTileIndex(32, 11)
         ));
+        
+        for(int i = 0; i < 4; i++){
+            enhancedMapTiles.add(new SkyWater(
+                    getPositionByTileIndex(26 + i, 14)
+            ));
+            for(int j = 0; j < 2; j++) {
+                enhancedMapTiles.add(new Water(
+                        getPositionByTileIndex(26 + i, 15 + j)
+                ));
+            }
+        }
 
         return enhancedMapTiles;
     }

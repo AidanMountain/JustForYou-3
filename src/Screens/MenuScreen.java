@@ -30,6 +30,9 @@ public class MenuScreen extends Screen {
 
     @Override
     public void initialize() {
+
+        screenCoordinator.getGameWindow().getInputManager().setKeyLocker(keyLocker);
+
         playGame = new SpriteFont("PLAY GAME", 200, 150, "Comic Sans", 30, new Color(49, 207, 240));
         playGame.setOutlineColor(Color.black);
         playGame.setOutlineThickness(3);
