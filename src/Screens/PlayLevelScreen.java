@@ -343,6 +343,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     bigScreen.setColor(new Color(49, 207, 240));
                     pointerLocationX = 460;
                     pointerLocationY = 350;
+
                 }
                 if(currentSettingLevelHovered == 2)
                 {
@@ -352,6 +353,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     pointerLocationX = 630;
                     pointerLocationY = 350;
                 }
+
             }
 
 
@@ -368,10 +370,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 if(settingsActive == false)
                 {
                     settingsActive = true;
+
+                }
+                 
                     else if(settingsActive == true)
                     {
                         //settingsActive = false;
                         if (settingsMenuItemSelected == 1)
+
                         {
                             if(currentSettingLevelHovered == 0)
                             {
@@ -421,6 +427,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             }
         }
     }
+
 
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
