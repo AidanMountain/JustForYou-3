@@ -47,6 +47,7 @@ public abstract class Player extends GameObject {
     protected PowerState previousPowerState;
     protected LevelState levelState;
     protected boolean unlockedPowerUpOne = false;
+    protected boolean underwater;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -75,6 +76,7 @@ public abstract class Player extends GameObject {
         powerState = PowerState.SAFE;
         previousPowerState = powerState;
         levelState = LevelState.RUNNING;
+        underwater = false;
 
         File jumpSound = new File("Jump.wav");
         File walkSound = new File("Walking on concrete sound effect YouTube.wav");
@@ -87,6 +89,20 @@ public abstract class Player extends GameObject {
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
             applyGravity();
+
+            //prevents user from walking off the edge of the map (fix for map boundaries)
+            if(super.x < 0 - map.tileset.getScaledSpriteWidth()/2) {
+                super.x += 0;
+                if(Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+                    moveAmountX += walkSpeed;
+                }
+            }
+            if(super.x > map.endBoundX - map.tileset.getScaledSpriteWidth()) {
+                super.x -= 0;
+                if(Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+                    moveAmountX -= walkSpeed;
+                }
+            }
 
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
             do {
@@ -105,14 +121,6 @@ public abstract class Player extends GameObject {
             super.moveXHandleCollision(moveAmountX);
 
             updateLockedKeys();
-
-            // boundaries stopping the cat from falling off the map
-            if (x <= super.getStartBoundX()) {
-                x = previousX;
-            }
-            else if (x >= super.getEndBoundX() - 60) {
-                x = previousX;
-            }
         }
 
         // if player has beaten level
@@ -125,6 +133,9 @@ public abstract class Player extends GameObject {
             updatePlayerDead();
         }
     }
+    
+    // set swimming state on player for water tiles
+    public void setPlayerSwimming(boolean setState){underwater = setState;}
 
     // add gravity to player, which is a downward force
     protected void applyGravity() {
@@ -187,6 +198,9 @@ public abstract class Player extends GameObject {
         File walk = new File("Resources/Walk.wav");
         // sets animation to a WALK animation based on which way player is facing
         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
+        
+        if(underwater){walkSpeed = 1.6f;}
+        else{walkSpeed = 3.6f;}
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
@@ -272,6 +286,11 @@ public abstract class Player extends GameObject {
 
     // player JUMPING state logic
     protected void playerJumping() {
+    	
+    	if(underwater){jumpHeight = 8; jumpDegrade = .3f; terminalVelocityY = 1.5f
+    	        ;}
+    	        else{jumpHeight = 14.5f; jumpDegrade = .5f; terminalVelocityY = 6;}
+    	
         File jump = new File("Resources/Jump.wav");
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
@@ -317,6 +336,22 @@ public abstract class Player extends GameObject {
             // if player is falling, increases momentum as player falls so it falls faster over time
             if (moveAmountY > 0) {
                 increaseMomentum();
+            }
+            
+            if(underwater){
+                // if jump key is pressed underwater, player swims up
+                if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+                    keyLocker.lockKey(JUMP_KEY);
+                    airGroundState = AirGroundState.AIR;
+                    jumpForce = jumpHeight;
+                    if (jumpForce > 0) {
+                        moveAmountY -= jumpForce;
+                        jumpForce -= jumpDegrade;
+                        if (jumpForce < 0) {
+                            jumpForce = 0;
+                        }
+                    }
+                }
             }
         }
 
