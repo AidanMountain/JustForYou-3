@@ -6,6 +6,8 @@ import Enemies.LawnMowerOfDeath;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
+import EnhancedMapTiles.SkyWater;
+import EnhancedMapTiles.Water;
 import GameObject.Rectangle;
 import Level.*;
 import Tilesets.MasterMapTileset;
@@ -119,6 +121,17 @@ public class LevelThree extends Map {
         enhancedMapTiles.add(new EndLevelBox(
                 getPositionByTileIndex(112, 41)
         ));
+        
+        for(int i = 0; i < 5; i++) {
+        	enhancedMapTiles.add(new SkyWater(
+        			getPositionByTileIndex(102 + i, 44)
+        	));
+        	for(int j = 0; j < 4; j++) {
+                enhancedMapTiles.add(new Water(
+                        getPositionByTileIndex(102 + i, 45 + j)
+                ));
+            }
+        }
 
         return enhancedMapTiles;
     }
