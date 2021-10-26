@@ -367,11 +367,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 {
                     settingsActive = true;
 
+
                 }
                 else if(settingsActive == true)
                 {
                     //settingsActive = false;
                     if (settingsMenuItemSelected == 1)
+
+                }
+                    else if(settingsActive == true)
+
                     {
                         if(currentSettingLevelHovered == 0)
                         {
