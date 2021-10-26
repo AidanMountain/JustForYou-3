@@ -21,12 +21,15 @@ import java.util.ArrayList;
 
 public class LevelFour extends Map {
 
-    public LevelFour() { super("level_four.txt", new MasterMapTileset(), new Point(103,17)); }
+    public LevelFour() { super("level_four.txt", new MasterMapTileset(), new Point(1,17)); }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
+        enemies.add(new BugEnemy(getPositionByTileIndex(17, 22), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(34, 19), Direction.LEFT));
+        
         enemies.add(new BugEnemy(getPositionByTileIndex(63, 23), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(65, 23), Direction.LEFT));
 
@@ -45,17 +48,18 @@ public class LevelFour extends Map {
 //        enemies.add(new BugEnemy(getPositionByTileIndex(114, 23), Direction.LEFT));
 
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(14, 18).addY(2), getPositionByTileIndex(18, 18).addY(2), Direction.RIGHT));
-        enemies.add(new DinosaurEnemy(getPositionByTileIndex(19, 18).addY(2), getPositionByTileIndex(24, 18).addY(2), Direction.RIGHT));
-        enemies.add(new DinosaurEnemy(getPositionByTileIndex(30, 14).addY(2), getPositionByTileIndex(34, 14).addY(2), Direction.RIGHT));
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(20, 18).addY(2), getPositionByTileIndex(24, 18).addY(2), Direction.RIGHT));
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(29, 14).addY(2), getPositionByTileIndex(32, 14).addY(2), Direction.RIGHT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(45, 14).addY(2), getPositionByTileIndex(52, 14).addY(2), Direction.RIGHT));
 
-        enemies.add(new Mouse(getPositionByTileIndex(10, 18), Direction.LEFT));
-        enemies.add(new Mouse(getPositionByTileIndex(42, 11), Direction.LEFT));
+        enemies.add(new Mouse(getPositionByTileIndex(16, 22), Direction.LEFT));
+        enemies.add(new Mouse(getPositionByTileIndex(43, 11), Direction.LEFT));
         enemies.add(new Mouse(getPositionByTileIndex(62, 23), Direction.LEFT));
         enemies.add(new Mouse(getPositionByTileIndex(66, 23), Direction.LEFT));
         enemies.add(new Mouse(getPositionByTileIndex(72, 23), Direction.LEFT));
 
         enemies.add(new BossMouse(getPositionByTileIndex(109, 20), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(111, 20), Direction.LEFT));
 
         return enemies;
     }
@@ -65,6 +69,16 @@ public class LevelFour extends Map {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
+                ImageLoader.load("GreenPlatform.png"),
+                getPositionByTileIndex(74, 16),
+                getPositionByTileIndex(78, 16),
+                TileType.JUMP_THROUGH_PLATFORM,
+                3,
+                new Rectangle(0, 6,16,4),
+                Direction.RIGHT
+        ));
+        
+         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
                 getPositionByTileIndex(89, 15),
                 getPositionByTileIndex(93, 15),
@@ -76,7 +90,17 @@ public class LevelFour extends Map {
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
                 getPositionByTileIndex(107, 15),
-                getPositionByTileIndex(114, 15),
+                getPositionByTileIndex(110, 15),
+                TileType.JUMP_THROUGH_PLATFORM,
+                3,
+                new Rectangle(0, 6,16,4),
+                Direction.RIGHT
+        ));
+        
+        enhancedMapTiles.add(new HorizontalMovingPlatform(
+                ImageLoader.load("GreenPlatform.png"),
+                getPositionByTileIndex(113, 15),
+                getPositionByTileIndex(116, 15),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
                 new Rectangle(0, 6,16,4),
