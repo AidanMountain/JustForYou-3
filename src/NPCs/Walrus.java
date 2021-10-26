@@ -17,22 +17,33 @@ import Utils.Point;
 
 // This class is for the walrus NPC
 public class Walrus extends NPC {
+	
+	protected double xDistFromPlayer;
+    protected double yDistFromPlayer;
+    protected double dist;
 
 	public Walrus(Point location, Map map) {
 		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Walrus.png"), 24, 24), "TAIL_DOWN", 5000);
 	}
-
-	@Override
-	protected SpriteFont createMessage() {
-		return new SpriteFont("You look lost! You need to get home!", getX(), getY() - 10, "Arial", 12, Color.BLACK);
+	
+	public Walrus(Point location, Map map, String speech) {
+		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Walrus.png"), 24, 24), "TAIL_DOWN", 5000, speech);
 	}
 
 	@Override
 	public void update(Player player) {
+		
+        xDistFromPlayer = Math.pow((this.getX() - player.getX()), 2);
+        yDistFromPlayer = Math.pow((this.getY() - player.getY()), 2);
+        dist = Math.sqrt(xDistFromPlayer + yDistFromPlayer);
+        
 		// while npc is being talked to, it raises its tail up (in excitement?)
 		if (talkedTo) {
 			currentAnimationName = "TAIL_UP";
-		} else {
+		} else if (dist < 150 && !this.getTalkedTo()) {
+			currentAnimationName = "PLAYER_CLOSE";
+		}
+		else {
 			currentAnimationName = "TAIL_DOWN";
 		}
 		super.update(player);
@@ -46,6 +57,8 @@ public class Walrus extends NPC {
 						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
 				put("TAIL_UP", new Frame[] { new FrameBuilder(spriteSheet.getSprite(1, 0), 0).withScale(3)
 						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+				put("PLAYER_CLOSE", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 1), 0).withScale(3)
+	                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
 			}
 		};
 	}
@@ -53,16 +66,5 @@ public class Walrus extends NPC {
 	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		super.draw(graphicsHandler);
-	}
-
-	@Override
-	public void drawMessage(GraphicsHandler graphicsHandler) {
-		// draws a box with a border (think like a speech box)
-		graphicsHandler.drawFilledRectangleWithBorder(Math.round(getCalibratedXLocation() - 2),
-				Math.round(getCalibratedYLocation() - 24), 200, 25, Color.WHITE, Color.BLACK, 2);
-
-		// draws message "Hello" in the above speech box
-		message.setLocation(getCalibratedXLocation() + 2, getCalibratedYLocation() - 8);
-		message.draw(graphicsHandler);
 	}
 }

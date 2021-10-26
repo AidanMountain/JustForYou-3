@@ -18,6 +18,7 @@ public class MenuScreen extends Screen {
     protected SpriteFont playGame;
     protected SpriteFont instructionsMenu;
     protected SpriteFont credits;
+    protected SpriteFont usagePrompt;
     protected Map background;
     protected Stopwatch keyTimer = new Stopwatch();
     protected int pointerLocationX, pointerLocationY;
@@ -41,11 +42,12 @@ public class MenuScreen extends Screen {
         credits = new SpriteFont("CREDITS", 200, 300, "Comic Sans", 30, new Color(49, 207, 240));
         credits.setOutlineColor(Color.black);
         credits.setOutlineThickness(3);
+        usagePrompt = new SpriteFont("Use the Arrow Keys and Enter to use the menu", 30, 40, "Times New Roman", 30, Color.white);
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
         keyTimer.setWaitTime(200);
         menuItemSelected = -1;
-        keyLocker.lockKey(Key.SPACE);
+        keyLocker.lockKey(Key.ENTER);
     }
 
     public void update() {
@@ -92,10 +94,10 @@ public class MenuScreen extends Screen {
         }
 
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
-        if (Keyboard.isKeyUp(Key.SPACE)) {
-            keyLocker.unlockKey(Key.SPACE);
+        if (Keyboard.isKeyUp(Key.ENTER)) {
+            keyLocker.unlockKey(Key.ENTER);
         }
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+        if (!keyLocker.isKeyLocked(Key.ENTER) && Keyboard.isKeyDown(Key.ENTER)) {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
                 screenCoordinator.setGameState(GameState.INTRO);
@@ -113,6 +115,7 @@ public class MenuScreen extends Screen {
         playGame.draw(graphicsHandler);
         instructionsMenu.draw(graphicsHandler);
         credits.draw(graphicsHandler);
+        usagePrompt.draw(graphicsHandler);
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
     }
 

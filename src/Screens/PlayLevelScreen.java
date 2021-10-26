@@ -355,21 +355,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             }
 
 
-            if (Keyboard.isKeyUp(Key.SPACE))
+        if (Keyboard.isKeyUp(Key.ENTER))
+        {
+            keyLocker.unlockKey(Key.ENTER);
+        }
+        if (!keyLocker.isKeyLocked(Key.ENTER) && Keyboard.isKeyDown(Key.ENTER))
+        {
+        	keyLocker.lockKey(Key.ENTER);
+            menuItemSelected = currentMenuItemHovered;
+            if (menuItemSelected == 1)
             {
-                keyLocker.unlockKey(Key.SPACE);
-            }
-            if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE))
-            {
-                keyLocker.lockKey(Key.SPACE);
-                menuItemSelected = currentMenuItemHovered;
-                if (menuItemSelected == 1)
+                if(settingsActive == false)
                 {
-                    if(settingsActive == false)
-                    {
-                        settingsActive = true;
-
-                    }
+                    settingsActive = true;
                     else if(settingsActive == true)
                     {
                         //settingsActive = false;
@@ -531,7 +529,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public static void playTheMusic()
     {
 
-        String filePath = "Resources/MakafushigiAdventure.wav";
+        String filePath = "Resources/GameMusic.wav";
         MusicData musicObject = new MusicData();
         musicObject.playMusic(filePath, vol);
 

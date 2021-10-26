@@ -54,22 +54,22 @@ public class InstructionScreen extends Screen {
         instructionsPause = new SpriteFont("P to pause the game", 105, 425, "Comic Sans", 30, Color.white);
         instructionsPause.setOutlineColor(Color.black);
         instructionsPause.setOutlineThickness(3);
-        returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 560, "Comic Sans", 30, Color.white);
+        returnInstructionsLabel = new SpriteFont("Press Enter to return to the menu", 20, 560, "Comic Sans", 30, Color.white);
         returnInstructionsLabel.setOutlineColor(Color.black);
         returnInstructionsLabel.setOutlineThickness(3);
-        keyLocker.lockKey(Key.SPACE);
+        keyLocker.lockKey(Key.ENTER);
     }
     
     //@Override
     public void update() {
         background.update(null);
 
-        if (Keyboard.isKeyUp(Key.SPACE)) {
-            keyLocker.unlockKey(Key.SPACE);
+        if (Keyboard.isKeyUp(Key.ENTER)) {
+            keyLocker.unlockKey(Key.ENTER);
         }
 
         // if space is pressed, go back to main menu
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+        if (!keyLocker.isKeyLocked(Key.ENTER) && Keyboard.isKeyDown(Key.ENTER)) {
             screenCoordinator.setGameState(GameState.MENU);
         }
     }
