@@ -28,14 +28,14 @@ public class LevelFour extends Map {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         enemies.add(new BugEnemy(getPositionByTileIndex(17, 22), Direction.LEFT));
-        enemies.add(new BugEnemy(getPositionByTileIndex(34, 19), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(34, 18), Direction.LEFT));
         
         enemies.add(new BugEnemy(getPositionByTileIndex(63, 23), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(65, 23), Direction.LEFT));
 
         enemies.add(new BugEnemy(getPositionByTileIndex(68, 23), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(69, 23), Direction.LEFT));
-        enemies.add(new BugEnemy(getPositionByTileIndex(71, 23), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(72, 23), Direction.LEFT));
 
         enemies.add(new BugEnemy(getPositionByTileIndex(89, 23), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(91, 23), Direction.LEFT));
@@ -56,7 +56,7 @@ public class LevelFour extends Map {
         enemies.add(new Mouse(getPositionByTileIndex(43, 11), Direction.LEFT));
         enemies.add(new Mouse(getPositionByTileIndex(62, 23), Direction.LEFT));
         enemies.add(new Mouse(getPositionByTileIndex(66, 23), Direction.LEFT));
-        enemies.add(new Mouse(getPositionByTileIndex(72, 23), Direction.LEFT));
+        enemies.add(new Mouse(getPositionByTileIndex(73, 23), Direction.LEFT));
 
         enemies.add(new BossMouse(getPositionByTileIndex(109, 20), Direction.LEFT));
         enemies.add(new BugEnemy(getPositionByTileIndex(111, 20), Direction.LEFT));
@@ -89,7 +89,7 @@ public class LevelFour extends Map {
         ));
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(107, 15),
+                getPositionByTileIndex(106, 15),
                 getPositionByTileIndex(110, 15),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
@@ -122,4 +122,6 @@ public class LevelFour extends Map {
 
         return npcs;
     }
+    
+    
 }
