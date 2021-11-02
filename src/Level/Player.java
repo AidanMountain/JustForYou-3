@@ -7,14 +7,10 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Players.Hairball;
 import Utils.*;
-import javax.sound.sampled.AudioInputStream;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import java.applet.AudioClip;
 import java.io.File;
 
 import java.util.ArrayList;
@@ -47,6 +43,7 @@ public abstract class Player extends GameObject {
     protected PowerState previousPowerState;
     protected LevelState levelState;
     protected boolean unlockedPowerUpOne = false;
+    protected boolean underwater;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -59,14 +56,14 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
     //powerup attack
     protected Key POWERUP_ONE_KEY = Key.ONE;
-    protected Stopwatch coolDownTimer = new Stopwatch();
+    protected Stopwatch shootCoolDownTimer = new Stopwatch();
 
     // if true, player cannot be hurt by enemies (good for testing)
     //TODO: Where to set god mode
     protected boolean isInvincible = false;
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
-        super(spriteSheet, x, y, startingAnimationName);
+        super(spriteSheet, x, y, startingAnimationName, 1);
         facingDirection = Direction.RIGHT;
         airGroundState = AirGroundState.AIR;
         previousAirGroundState = airGroundState;
@@ -75,6 +72,7 @@ public abstract class Player extends GameObject {
         powerState = PowerState.SAFE;
         previousPowerState = powerState;
         levelState = LevelState.RUNNING;
+        underwater = false;
 
         File jumpSound = new File("Jump.wav");
         File walkSound = new File("Walking on concrete sound effect YouTube.wav");
@@ -87,6 +85,20 @@ public abstract class Player extends GameObject {
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
             applyGravity();
+
+            //prevents user from walking off the edge of the map (fix for map boundaries)
+            if(super.x < 0 - map.tileset.getScaledSpriteWidth()/2) {
+                super.x += 0;
+                if(Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+                    moveAmountX += walkSpeed;
+                }
+            }
+            if(super.x > map.endBoundX - map.tileset.getScaledSpriteWidth()) {
+                super.x -= 0;
+                if(Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+                    moveAmountX -= walkSpeed;
+                }
+            }
 
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
             do {
@@ -106,13 +118,11 @@ public abstract class Player extends GameObject {
 
             updateLockedKeys();
 
-            // boundaries stopping the cat from falling off the map
-            if (x <= super.getStartBoundX()) {
-                x = previousX;
+            if(keyLocker.isKeyLocked(POWERUP_ONE_KEY)) { UnlockPowerOneKey(); }
+            if(Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)){
+                shoot();
             }
-            else if (x >= super.getEndBoundX() - 60) {
-                x = previousX;
-            }
+
         }
 
         // if player has beaten level
@@ -125,6 +135,9 @@ public abstract class Player extends GameObject {
             updatePlayerDead();
         }
     }
+    
+    // set swimming state on player for water tiles
+    public void setPlayerSwimming(boolean setState){underwater = setState;}
 
     // add gravity to player, which is a downward force
     protected void applyGravity() {
@@ -145,9 +158,6 @@ public abstract class Player extends GameObject {
                 break;
             case JUMPING:
                 playerJumping();
-                break;
-            case POWERUP_ONE:
-                playerPowerUp();
                 break;
         }
     }
@@ -173,11 +183,6 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
             walkSoundPlayed = false;
-        } else if (getUnlockedPowerUpOne()) {
-            if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
-                powerState = PowerState.SAFE;
-                playerState = PlayerState.POWERUP_ONE;
-            }
         }
 
     }
@@ -187,6 +192,9 @@ public abstract class Player extends GameObject {
         File walk = new File("Resources/Walk.wav");
         // sets animation to a WALK animation based on which way player is facing
         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
+        
+        if(underwater){walkSpeed = 1.6f;}
+        else{walkSpeed = 3.6f;}
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
@@ -253,37 +261,13 @@ public abstract class Player extends GameObject {
         }
     }
 
-    protected void playerPowerUp() {
-
-        if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
-            int hairballX;
-            float movementSpeed;
-            if (facingDirection == Direction.RIGHT) {
-                hairballX = Math.round(getX()) + getScaledWidth();
-                movementSpeed = 1.5f;
-            } else {
-                hairballX = Math.round(getX());
-                movementSpeed = -1.5f;
-            }
-
-            // define where hairball will spawn on the map (y location) relative to player's location
-            int hairballY = Math.round(getY()) + 20;
-
-            //create a Hairball enemy
-            Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
-
-            // add hairball enemy to the map for it to offically spawn in the level
-            map.addPowerUp(hairball);
-            powerState = PowerState.FIRE;
-        }
-
-        if (Keyboard.isKeyUp(POWERUP_ONE_KEY)) {
-            playerState = PlayerState.STANDING;
-        }
-    }
-
     // player JUMPING state logic
     protected void playerJumping() {
+    	
+    	if(underwater){jumpHeight = 8; jumpDegrade = .3f; terminalVelocityY = 1.5f
+    	        ;}
+    	        else{jumpHeight = 14.5f; jumpDegrade = .5f; terminalVelocityY = 6;}
+    	
         File jump = new File("Resources/Jump.wav");
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
@@ -329,6 +313,22 @@ public abstract class Player extends GameObject {
             // if player is falling, increases momentum as player falls so it falls faster over time
             if (moveAmountY > 0) {
                 increaseMomentum();
+            }
+            
+            if(underwater){
+                // if jump key is pressed underwater, player swims up
+                if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+                    keyLocker.lockKey(JUMP_KEY);
+                    airGroundState = AirGroundState.AIR;
+                    jumpForce = jumpHeight;
+                    if (jumpForce > 0) {
+                        moveAmountY -= jumpForce;
+                        jumpForce -= jumpDegrade;
+                        if (jumpForce < 0) {
+                            jumpForce = 0;
+                        }
+                    }
+                }
             }
         }
 
@@ -528,5 +528,42 @@ public abstract class Player extends GameObject {
         gain.setValue(dB);
     }
 
+    private void shoot(){
+        if (getUnlockedPowerUpOne() && playerState != PlayerState.POWERUP_ONE) {
+
+            powerState = PowerState.SAFE;
+
+            if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
+                int hairballX;
+                float movementSpeed;
+                if (facingDirection == Direction.RIGHT) {
+                    hairballX = Math.round(getX()) + getScaledWidth();
+                    movementSpeed = 1.5f;
+                } else {
+                    hairballX = Math.round(getX());
+                    movementSpeed = -1.5f;
+                }
+
+                // define where hairball will spawn on the map (y location) relative to player's location
+
+                int hairballY = Math.round(getY()) + 20;
+                if(playerState == PlayerState.CROUCHING) hairballY += 10;
+
+                //create a Hairball enemy
+                Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
+
+                // add hairball enemy to the map for it to offically spawn in the level
+                map.addPowerUp(hairball);
+                powerState = PowerState.FIRE;
+                keyLocker.lockKey(POWERUP_ONE_KEY);
+            }
+        }
+    }
+
+    private void UnlockPowerOneKey(){
+        if(Keyboard.isKeyUp(POWERUP_ONE_KEY)){
+            keyLocker.unlockKey(POWERUP_ONE_KEY);
+        }
+    }
 
 }
