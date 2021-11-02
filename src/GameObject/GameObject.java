@@ -3,7 +3,8 @@ package GameObject;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-
+import Engine.Keyboard;
+import Engine.Key;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Level.Map;
@@ -36,6 +37,9 @@ public class GameObject extends AnimatedSprite {
 
 	// the map instance this game object "belongs" to.
 	protected Map map;
+	
+	// the id of the game object (only used to see if the game object is a player
+	protected int id;
 
 	public GameObject(SpriteSheet spriteSheet, float x, float y, String startingAnimation) {
 		super(spriteSheet, x, y, startingAnimation);
@@ -43,6 +47,15 @@ public class GameObject extends AnimatedSprite {
 		this.startPositionY = y;
 		this.previousX = x;
 		this.previousY = y;
+	}
+	
+	public GameObject(SpriteSheet spriteSheet, float x, float y, String startingAnimation, int id) {
+		super(spriteSheet, x, y, startingAnimation);
+		this.startPositionX = x;
+		this.startPositionY = y;
+		this.previousX = x;
+		this.previousY = y;
+		this.id = id;
 	}
 
 	public GameObject(float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
@@ -306,6 +319,14 @@ public class GameObject extends AnimatedSprite {
 		} else {
 			return getScaledBounds();
 		}
+	}
+	
+	public boolean isDownPressed(){
+		return Keyboard.isKeyDown(Key.DOWN);
+	}
+
+	public int getId(){
+		return id;
 	}
 
 	// set this game object's map to make it a "part of" the map, allowing
