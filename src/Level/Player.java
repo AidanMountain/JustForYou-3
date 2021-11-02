@@ -220,6 +220,12 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
+        else if (getUnlockedPowerUpOne()) {
+            if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
+                powerState = PowerState.SAFE;
+                playerState = PlayerState.POWERUP_ONE;
+            }
+        }
     }
 
     public void playWalkSound(boolean walkingCalled)
@@ -246,6 +252,12 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+        }
+        else if (getUnlockedPowerUpOne()) {
+            if (Keyboard.isKeyDown(POWERUP_ONE_KEY) && !keyLocker.isKeyLocked(POWERUP_ONE_KEY)) {
+                powerState = PowerState.SAFE;
+                playerState = PlayerState.POWERUP_ONE;
+            }
         }
     }
 

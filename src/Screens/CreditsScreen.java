@@ -44,7 +44,7 @@ public class CreditsScreen extends Screen {
             keyLocker.unlockKey(Key.ENTER);
         }
 
-        // if space is pressed, go back to main menu
+        // if enter is pressed, go back to main menu
         if (!keyLocker.isKeyLocked(Key.ENTER) && Keyboard.isKeyDown(Key.ENTER)) {
             screenCoordinator.setGameState(GameState.MENU);
         }

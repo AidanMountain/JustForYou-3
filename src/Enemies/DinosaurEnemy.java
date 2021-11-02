@@ -23,7 +23,7 @@ public class DinosaurEnemy extends Enemy {
     // is only made to walk along the x axis and has no air ground state logic, so make sure both points have the same Y value
     protected Point startLocation;
     protected Point endLocation;
-
+    private float gravity = 1f;
     protected float movementSpeed = 1f;
     private Direction startFacingDirection;
     protected Direction facingDirection;
@@ -65,6 +65,12 @@ public class DinosaurEnemy extends Enemy {
     public void update(Player player) {
         float startBound = startLocation.x;
         float endBound = endLocation.x;
+        float moveAmountX = 0;
+        float moveAmountY = 0;
+        
+        //add gravity (if in air then dino will fall to ground)
+        moveAmountY += gravity;
+        
 
         // if shoot timer is up and dinosaur is not currently shooting, set its state to SHOOT
         if (shootTimer.isTimeUp() && dinosaurState != DinosaurState.SHOOT) {
@@ -72,6 +78,7 @@ public class DinosaurEnemy extends Enemy {
         }
 
         super.update(player);
+     
 
         // if dinosaur is walking, determine which direction to walk in based on facing direction
         if (dinosaurState == DinosaurState.WALK) {
@@ -82,7 +89,7 @@ public class DinosaurEnemy extends Enemy {
                 currentAnimationName = "WALK_LEFT";
                 moveXHandleCollision(-movementSpeed);
             }
-
+            moveYHandleCollision(moveAmountY);
             // if dinosaur reaches the start or end location, it turns around
             // dinosaur may end up going a bit past the start or end location depending on movement speed
             // this calculates the difference and pushes the enemy back a bit so it ends up right on the start or end location
@@ -145,6 +152,15 @@ public class DinosaurEnemy extends Enemy {
                 currentAnimationName = "WALK_RIGHT";
             }
         }
+    }
+    public void onEndCollisionCheckY(boolean hasCollided, Direction direction) {
+    	if (direction == Direction.DOWN) {
+			if (hasCollided) {
+				airGroundState = AirGroundState.GROUND;
+			} else {
+				airGroundState = AirGroundState.AIR;
+			}
+		}
     }
 
     @Override
