@@ -10,6 +10,7 @@ import Screens.IntroductionScreen;
 import Screens.InstructionScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.SettingsScreen;
 import Level.MusicData;
 
 /*
@@ -69,6 +70,8 @@ public class ScreenCoordinator extends Screen {
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);
 						break;
+					case SETTINGS:
+						currentScreen = new SettingsScreen(this, gameWindow, musicData);
 				}
 				currentScreen.initialize();
 			}

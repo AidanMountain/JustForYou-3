@@ -5,8 +5,11 @@ import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+
+import Engine.GraphicsHandler;
 
 // This class is a base class for all enemies in the game -- all enemies should extend from it
 public class Enemy extends MapEntity {
@@ -66,4 +69,11 @@ public class Enemy extends MapEntity {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
         }
     }
+    
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        super.draw(graphicsHandler);
+        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+    }
+    
 }

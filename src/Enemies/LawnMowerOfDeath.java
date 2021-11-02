@@ -101,16 +101,17 @@ public class LawnMowerOfDeath extends Enemy {
 			{
 				put("WALK_LEFT",
 						new Frame[] {
-								new FrameBuilder(spriteSheet.getSprite(0, 0), 100).withScale(3).withBounds(8, 8, 25, 26)
-										.build(),
-								new FrameBuilder(spriteSheet.getSprite(0, 1), 100).withScale(3).withBounds(8, 8, 25, 26)
-										.build() });
+								new FrameBuilder(spriteSheet.getSprite(0, 0), 100).withScale(3).withBounds(1, 24, 25, 8)
+								.build(),
+							new FrameBuilder(spriteSheet.getSprite(0, 1), 100).withScale(3).withBounds(1, 24, 25, 8)
+								.build(), 
+								});
 
 				put("WALK_RIGHT", new Frame[] {
 						new FrameBuilder(spriteSheet.getSprite(0, 0), 100).withScale(3)
-								.withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 25, 26).build(),
+							.withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(15, 24, 23, 8).build(),
 						new FrameBuilder(spriteSheet.getSprite(0, 1), 100).withScale(3)
-								.withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 25, 26).build() });
+							.withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(15, 24, 23, 8).build() });
 			}
 		};
 	}
