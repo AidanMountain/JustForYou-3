@@ -140,9 +140,18 @@ public class GameObject extends AnimatedSprite {
 	public void update() {
 		// call to animation logic
 		super.update();
+		if(x < map.getStartBoundX())
+		{
+			x = previousX;
+			this.onEndCollisionCheckX(true, Direction.LEFT);
+		}
+		else
+		{
+			previousX = x;
+			previousY = y;
+		}
 		// update previous position to be the current position
-				previousX = x;
-				previousY = y;
+				
 	}
 
 	// move game object along the x axis
