@@ -3,6 +3,7 @@ package Enemies;
 import java.util.HashMap;
 
 import Builders.FrameBuilder;
+import Enemies.DinosaurEnemy.DinosaurState;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
@@ -12,8 +13,9 @@ import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
+import Utils.Stopwatch;
 
-// This class is for the black bug enemy
+// This class is for the Lawn Mower Enemy
 // enemy behaves like a Mario goomba -- walks forward until it hits a solid map tile, and then turns around
 // if it ends up in the air from walking off a cliff, it will fall down until it hits the ground again, and then will continue walking
 public class LawnMowerOfDeath extends Enemy {
@@ -23,6 +25,11 @@ public class LawnMowerOfDeath extends Enemy {
 	private Direction startFacingDirection;
 	private Direction facingDirection;
 	private AirGroundState airGroundState;
+	private LawnMowerState state;
+	private Stopwatch dashTimer = new Stopwatch();
+	private Stopwatch dashWaiter = new Stopwatch();
+	public Stopwatch charging = new Stopwatch();
+	private boolean isDashing, isCharging = false;
 
 	public LawnMowerOfDeath(Point location, Direction facingDirection) {
 		super(location.x, location.y, new SpriteSheet(ImageLoader.load("LawnMower.png"), 39, 39), "WALK_LEFT");
@@ -33,6 +40,7 @@ public class LawnMowerOfDeath extends Enemy {
 	@Override
 	public void initialize() {
 		super.initialize();
+		state = LawnMowerState.WALK;
 		facingDirection = startFacingDirection;
 		if (facingDirection == Direction.RIGHT) {
 			currentAnimationName = "WALK_RIGHT";
@@ -40,6 +48,7 @@ public class LawnMowerOfDeath extends Enemy {
 			currentAnimationName = "WALK_LEFT";
 		}
 		airGroundState = AirGroundState.GROUND;
+		dashWaiter.setWaitTime(5000);
 	}
 
 	@Override
@@ -62,6 +71,42 @@ public class LawnMowerOfDeath extends Enemy {
 		// move bug
 		moveYHandleCollision(moveAmountY);
 		moveXHandleCollision(moveAmountX);
+	
+		
+		if (dashWaiter.isTimeUp() && airGroundState == AirGroundState.GROUND) 
+		{
+			state = LawnMowerState.DASH;
+        }
+		
+		if(state == LawnMowerState.DASH)
+		{
+			if (!isDashing) 
+				{
+					if(!isCharging)
+					{
+						charging.setWaitTime(1000);
+						this.setMovementSpeed(0f);
+						isCharging = true;
+					}
+					else if (charging.isTimeUp())
+					{
+						isCharging = false;
+						dashTimer.setWaitTime(1000);
+						isDashing = true;
+					}
+				}
+			else
+			{
+				this.setMovementSpeed(3f);
+				if (dashTimer.isTimeUp())
+				{
+					this.setMovementSpeed(1f);
+					state = LawnMowerState.WALK;
+					dashWaiter.reset();
+					isDashing = false;
+				}
+			}
+		}
 
 		super.update(player);
 	}
@@ -94,6 +139,8 @@ public class LawnMowerOfDeath extends Enemy {
 			}
 		}
 	}
+	
+	public void setMovementSpeed(float speed) { this.movementSpeed = speed; }
 
 	@Override
 	public HashMap<String, Frame[]> getAnimations(SpriteSheet spriteSheet) {
@@ -113,5 +160,10 @@ public class LawnMowerOfDeath extends Enemy {
 								.withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 25, 26).build() });
 			}
 		};
+	}
+	
+	public enum LawnMowerState
+	{
+		WALK, DASH;
 	}
 }
