@@ -29,6 +29,8 @@ public abstract class Player extends GameObject {
     protected float jumpForce = 0;
     protected float momentumY = 0;
     protected float moveAmountX, moveAmountY;
+    protected boolean ignoreRight = false;
+    protected boolean ignoreLeft = false;
 
     public static boolean walkSoundPlayed = true;
     public static float dB;
@@ -197,18 +199,23 @@ public abstract class Player extends GameObject {
         else{walkSpeed = 3.6f;}
 
         // if walk left key is pressed, move player to the left
-        if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && !ignoreLeft) {
+        	ignoreRight = true;
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
         }
 
         // if walk right key is pressed, move player to the right
-        else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+        else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) && !ignoreRight) {
+        	ignoreLeft = true;
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
         }
+        
+        if(Keyboard.isKeyUp(MOVE_LEFT_KEY)){ignoreRight = false;}
+        if(Keyboard.isKeyUp(MOVE_RIGHT_KEY)){ignoreLeft = false;}
 
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
@@ -304,10 +311,19 @@ public abstract class Player extends GameObject {
             }
 
             // allows you to move left and right while in the air
-            if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+            if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && !ignoreLeft) {
+            	ignoreRight = true;
                 moveAmountX -= walkSpeed;
-            } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+                facingDirection = Direction.LEFT;
+            }
+            
+            if(Keyboard.isKeyUp(MOVE_LEFT_KEY)){ignoreRight = false;}
+            if(Keyboard.isKeyUp(MOVE_RIGHT_KEY)){ignoreLeft = false;}
+            
+            if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) && !ignoreRight) {
+            	ignoreLeft = true;
                 moveAmountX += walkSpeed;
+                facingDirection = Direction.RIGHT;
             }
 
             // if player is falling, increases momentum as player falls so it falls faster over time
