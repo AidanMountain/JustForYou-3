@@ -125,7 +125,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
-                this.map = new LevelOne();
+                this.map = new LevelThree(); //TODO: Change back to one
                 map.reset();
                 break;
             case 1:

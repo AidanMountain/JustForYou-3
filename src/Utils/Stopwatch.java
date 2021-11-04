@@ -20,4 +20,10 @@ public class Stopwatch {
     public void reset() {
         setWaitTime(millisecondsToWait);
     }
+    
+    //Returns the amount of time the stopwatch has been running for
+    public long getTime()
+    {
+    	return System.currentTimeMillis() - beforeTime;
+    }
 }
