@@ -1,6 +1,7 @@
 package Screens;
 import Engine.*;
 import SpriteFont.SpriteFont;
+import Level.Player;
 
 import java.awt.*;
 
@@ -8,12 +9,15 @@ import java.awt.*;
 public class LevelClearedScreen extends Screen {
     protected SpriteFont winMessage;
 
-    public LevelClearedScreen() {
+    private Player player;
+    public LevelClearedScreen(Player player) {
+        this.player = player;
     }
 
     @Override
     public void initialize() {
         winMessage = new SpriteFont("Level Cleared", (Config.WIDTH / 2) - 80 , (Config.HEIGHT / 2) - 50, "Comic Sans", 30, Color.white);
+        player.setCheckPoint(null);
     }
 
     @Override

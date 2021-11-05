@@ -60,6 +60,8 @@ public abstract class Player extends GameObject {
     protected Key POWERUP_ONE_KEY = Key.ONE;
     protected Stopwatch shootCoolDownTimer = new Stopwatch();
 
+    private Point currentCheckPoint = null;
+
     // if true, player cannot be hurt by enemies (good for testing)
     //TODO: Where to set god mode
     protected boolean isInvincible = false;
@@ -78,6 +80,19 @@ public abstract class Player extends GameObject {
 
         File jumpSound = new File("Jump.wav");
         File walkSound = new File("Walking on concrete sound effect YouTube.wav");
+    }
+
+    public void reset(){
+        jumpForce = 0;
+        facingDirection = Direction.RIGHT;
+        airGroundState = AirGroundState.AIR;
+        previousAirGroundState = airGroundState;
+        playerState = PlayerState.STANDING;
+        previousPlayerState = playerState;
+        powerState = PowerState.SAFE;
+        previousPowerState = powerState;
+        levelState = LevelState.RUNNING;
+        underwater = false;
     }
 
     public void update() {
@@ -484,6 +499,10 @@ public abstract class Player extends GameObject {
     public boolean getUnlockedPowerUpOne() { return unlockedPowerUpOne; }
 
     public void unlockPowerUpOne() { unlockedPowerUpOne = true; }
+
+    public void setCheckPoint(Point newCheckpoint) { currentCheckPoint = newCheckpoint;}
+
+    public Point getCurrentCheckPoint(){ return currentCheckPoint; }
 
     public static void PlaySound(File Sound, double vol)
     {

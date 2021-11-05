@@ -15,6 +15,8 @@ import Level.Player;
 // basically just sets some values for physics and then defines animations
 public class Cat extends Player {
 
+	public Cat(){ this(-1, -1); }
+
 	public Cat(float x, float y) {
 		super(new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24), x, y, "STAND_RIGHT");
 		gravity = .5f;

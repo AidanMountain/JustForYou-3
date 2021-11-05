@@ -4,10 +4,7 @@ import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Enemies.LawnMowerOfDeath;
 import Engine.ImageLoader;
-import EnhancedMapTiles.EndLevelBox;
-import EnhancedMapTiles.HorizontalMovingPlatform;
-import EnhancedMapTiles.SkyWater;
-import EnhancedMapTiles.Water;
+import EnhancedMapTiles.*;
 import GameObject.Rectangle;
 import Level.*;
 
@@ -23,7 +20,10 @@ import java.util.ArrayList;
 public class LevelTwo extends Map {
 
     public LevelTwo() {
-        super("level_two.txt", new LevelTwoTileset(), new Point(1, 11));
+        this(new Point(1, 11));
+    }
+    public LevelTwo(Point spawn) {
+        super("level_two.txt", new LevelTwoTileset(), spawn);
     }
 
     @Override
@@ -164,6 +164,8 @@ public class LevelTwo extends Map {
                 ));
             }
         }
+
+        enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(33, 10)));
         
         return enhancedMapTiles;
     }
