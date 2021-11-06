@@ -35,7 +35,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private GameWindow gameWindow;
     private RebuildScreen rB;
     private Config config;
-    protected int currentLevel = 3;
+    protected int currentLevel = 0;
     private MusicData mD;
 //    private Game game;
 //    public static Camera cam;
