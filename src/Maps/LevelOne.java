@@ -16,14 +16,14 @@ import java.util.ArrayList;
 
 public class LevelOne extends Map {
 
-    public LevelOne() {
-        super("test_map.txt", new CommonTileset(), new Point(1, 11));
-    }
+    public LevelOne(Point start){super("test_map.txt", new CommonTileset(), start);}
+
+    public LevelOne() { this(new Point(1, 11)); }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(new BugEnemy(getPositionByTileIndex(15, 13), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(13, 13), Direction.LEFT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(19, 5).addY(2), getPositionByTileIndex(22, 5).addY(2), Direction.RIGHT));
         return enemies;
     }
@@ -56,6 +56,7 @@ public class LevelOne extends Map {
                 ));
             }
         }
+        enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(15, 12)));
 
         return enhancedMapTiles;
     }

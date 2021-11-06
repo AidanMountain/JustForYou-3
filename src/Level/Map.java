@@ -77,6 +77,7 @@ public abstract class Map {
     // loads in enemies, enhanced map tiles, and npcs
     // and instantiates a Camera
     public void setupMap() {
+
         loadMapFile();
 
         this.enemies = loadEnemies();
@@ -158,6 +159,10 @@ public abstract class Map {
     public Point getPlayerStartPosition() {
         MapTile tile = getMapTile(Math.round(playerStartTile.x), Math.round(playerStartTile.y));
         return new Point(tile.getX(), tile.getY());
+    }
+
+    public void setPlayerStartTile(Point newPoint){
+        playerStartTile = newPoint;
     }
 
     // get position on the map based on a specfic tile index

@@ -35,7 +35,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private GameWindow gameWindow;
     private RebuildScreen rB;
     private Config config;
-    protected int currentLevel = 0;
+    protected int currentLevel = 3;
     private MusicData mD;
 //    private Game game;
 //    public static Camera cam;
@@ -115,6 +115,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         bigScreen = new SpriteFont("Large ", 660, 370, "Comic Sans", 30, new Color (49, 207,240));
         bigScreen.setOutlineColor(Color.black);
         bigScreen.setOutlineThickness(3);
+
+        player = new Cat();
     }
 
     public void initialize() {
@@ -125,25 +127,48 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
-                this.map = new LevelOne();
+                if(player.getCurrentCheckPoint() != null){
+                    this.map = new LevelOne(player.getCurrentCheckPoint());
+                }
+                else{
+                    this.map = new LevelOne();
+                }
                 map.reset();
                 break;
             case 1:
-                this.map = new LevelTwo();
+                if(player.getCurrentCheckPoint() != null){
+                    this.map = new LevelTwo(player.getCurrentCheckPoint());
+                }
+                else{
+                    this.map = new LevelTwo();
+                }
                 map.reset();
                 break;
             case 2:
-                this.map = new LevelThree();
+                if(player.getCurrentCheckPoint() != null){
+                    this.map = new LevelThree(player.getCurrentCheckPoint());
+                }
+                else{
+                    this.map = new LevelThree();
+                }
                 map.reset();
                 break;
             case 3:
-                this.map = new LevelFour();
+                if(player.getCurrentCheckPoint() != null){
+                    this.map = new LevelFour(player.getCurrentCheckPoint());
+                }
+                else{
+                    this.map = new LevelFour();
+                }
                 map.reset();
                 break;
         }
 
         // setup player
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        this.player.reset();
+
+        //        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         if (currentLevel > 0) {
             player.unlockPowerUpOne();
         }
@@ -175,7 +200,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     break;
                 // if level has been completed, bring up level cleared screen
                 case LEVEL_COMPLETED:
-                    levelClearedScreen = new LevelClearedScreen();
+                    levelClearedScreen = new LevelClearedScreen(player);
                     levelClearedScreen.initialize();
                     screenTimer.setWaitTime(2500);
                     playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
