@@ -4,6 +4,7 @@ import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Enemies.Mouse;
 import Engine.ImageLoader;
+import EnhancedMapTiles.CheckPoint;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
@@ -21,7 +22,8 @@ import java.util.ArrayList;
 
 public class LevelFour extends Map {
 
-    public LevelFour() { super("level_four.txt", new MasterMapTileset(), new Point(1,17)); }
+    public LevelFour() { this(new Point(1,17)); }
+    public LevelFour(Point spawn) { super("level_four.txt", new MasterMapTileset(), spawn); }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
@@ -110,6 +112,9 @@ public class LevelFour extends Map {
         enhancedMapTiles.add(new EndLevelBox(
                 getPositionByTileIndex(129, 13)
         ));
+
+        enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(61, 17)));
+        enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(102, 17)));
 
         return enhancedMapTiles;
     }

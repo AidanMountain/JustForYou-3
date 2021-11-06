@@ -12,7 +12,7 @@ import Level.MapTile;
 public class CheckPoint extends EnhancedMapTile {
 
     public CheckPoint(Point location){
-        super(ImageLoader.load("CheckPoint.png"), location.x, location.y, TileType.PASSABLE, 3f);
+        super(ImageLoader.load("CheckPointTrans.png"), location.x, location.y, TileType.PASSABLE, 3f);
     }
 
     public void update(Player player){

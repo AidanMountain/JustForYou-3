@@ -166,7 +166,8 @@ public class LevelTwo extends Map {
         }
 
         enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(33, 10)));
-        
+        enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(82, 15)));
+
         return enhancedMapTiles;
     }
 

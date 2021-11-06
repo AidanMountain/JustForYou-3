@@ -35,7 +35,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private GameWindow gameWindow;
     private RebuildScreen rB;
     private Config config;
-    protected int currentLevel = 0;
+    protected int currentLevel = 3;
     private MusicData mD;
 //    private Game game;
 //    public static Camera cam;
@@ -145,11 +145,21 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 map.reset();
                 break;
             case 2:
-                this.map = new LevelThree();
+                if(player.getCurrentCheckPoint() != null){
+                    this.map = new LevelThree(player.getCurrentCheckPoint());
+                }
+                else{
+                    this.map = new LevelThree();
+                }
                 map.reset();
                 break;
             case 3:
-                this.map = new LevelFour();
+                if(player.getCurrentCheckPoint() != null){
+                    this.map = new LevelFour(player.getCurrentCheckPoint());
+                }
+                else{
+                    this.map = new LevelFour();
+                }
                 map.reset();
                 break;
         }
