@@ -74,6 +74,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     protected SpriteFont aspectRatioLevel;
 
+    protected SavedDataManager savedData;
+
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator, GameWindow gameWindow, MusicData musicData) {
         this.screenCoordinator = screenCoordinator;
@@ -117,6 +119,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         bigScreen.setOutlineThickness(3);
 
         player = new Cat();
+
+        savedData = new SavedDataManager();
+        savedData.load();
+        currentLevel = savedData.getCurLevel();
     }
 
     public void initialize() {
@@ -205,6 +211,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     screenTimer.setWaitTime(2500);
                     playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
                     currentLevel++;
+                    savedData.setCurLevel((short)currentLevel);
+                    savedData.save();
                     break;
                 // if level cleared screen is up and the timer is up for how long it should stay out, go back to main menu
                 case LEVEL_WIN_MESSAGE:
