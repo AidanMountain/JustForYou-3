@@ -7,14 +7,14 @@ import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntityStatus;
 import Level.Player;
-import Level.PowerUp;
+import Level.PlayerProjectile;
 import Utils.Direction;
 import Utils.Point;
 import Utils.Stopwatch;
 
 import java.util.HashMap;
 
-public class Hairball extends PowerUp {
+public class Hairball extends PlayerProjectile {
     private float movementSpeed;
     private Stopwatch existenceTimer = new Stopwatch();
 

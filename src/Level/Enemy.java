@@ -65,7 +65,7 @@ public class Enemy extends MapEntity {
 
     //extend enemy class.
     public void hurtEnemy(MapEntity mapEntity) {
-        if (mapEntity instanceof PowerUp) {
+        if (mapEntity instanceof PlayerProjectile) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
         }
     }
