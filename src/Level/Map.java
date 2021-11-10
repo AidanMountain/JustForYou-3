@@ -16,7 +16,7 @@ import java.util.Scanner;
     This class is for defining a map that is used for a specific level
     The map class handles/manages a lot of different things, including:
     1. tile map -- the map tiles that make up the map
-    2. entities in the map -- this includes enemies, enhanced map tiles, and npcs
+    2. entities in the map -- this includes enemies, enhanced map tiles, npcs, player projectiles, and power ups
     3. the map's camera, which does a lot of work itself in the Camera class
     4. adjusting camera location based off of player location
     5. calculating which tile a game object is currently on based on its x and y location
@@ -53,9 +53,10 @@ public abstract class Map {
 
     // lists to hold map entities that are a part of the map
     protected ArrayList<Enemy> enemies;
-    protected ArrayList<PowerUp> powerUps;
+    protected ArrayList<PlayerProjectile> playerProjectiles;
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
+    protected ArrayList<PowerUp> powerUps;
 
     // if set to false, camera will not move as player moves
     protected boolean adjustCamera = true;
@@ -74,7 +75,7 @@ public abstract class Map {
     }
 
     // sets up map by reading in the map file to create the tile map
-    // loads in enemies, enhanced map tiles, and npcs
+    // loads in enemies, enhanced map tiles, npcs, player projectiles, and power ups
     // and instantiates a Camera
     public void setupMap() {
         loadMapFile();
@@ -84,9 +85,9 @@ public abstract class Map {
             enemy.setMap(this);
         }
 
-        this.powerUps = loadPowerUps();
-        for (PowerUp powerUp: this.powerUps) {
-            powerUp.setMap(this);
+        this.playerProjectiles = loadPlayerProjectiles();
+        for (PlayerProjectile playerProjectile: this.playerProjectiles) {
+        	playerProjectile.setMap(this);
         }
 
         this.enhancedMapTiles = loadEnhancedMapTiles();
@@ -97,6 +98,11 @@ public abstract class Map {
         this.npcs = loadNPCs();
         for (NPC npc: this.npcs) {
             npc.setMap(this);
+        }
+        
+        this.powerUps = loadPowerUps();
+        for (PowerUp powerUp: this.powerUps){
+            powerUp.setMap(this);
         }
 
         this.camera = new Camera(0, 0, tileset.getScaledSpriteWidth(), tileset.getScaledSpriteHeight(), this);
@@ -270,8 +276,8 @@ public abstract class Map {
         return new ArrayList<>();
     }
 
-    // list of powerups defined to be a part of the map, should be overriden in a subclass
-    protected ArrayList<PowerUp> loadPowerUps() {
+    // list of player projectiles defined to be a part of the map, should be overriden in a subclass
+    protected ArrayList<PlayerProjectile> loadPlayerProjectiles() {
         return new ArrayList<>();
     }
 
@@ -284,6 +290,11 @@ public abstract class Map {
     protected ArrayList<NPC> loadNPCs() {
         return new ArrayList<>();
     }
+    
+    // list of power ups defined to be a part of the map, should be overridden in a subclass
+    protected ArrayList<PowerUp> loadPowerUps() {
+        return new ArrayList<>();
+    }
 
     public Camera getCamera() {
         return camera;
@@ -292,12 +303,17 @@ public abstract class Map {
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
-    public ArrayList<PowerUp> getPowerUps() {return powerUps;}
+    public ArrayList<PlayerProjectile> getPlayerProjectiles() {
+    	return playerProjectiles;
+    }
     public ArrayList<EnhancedMapTile> getEnhancedMapTiles() {
         return enhancedMapTiles;
     }
     public ArrayList<NPC> getNPCs() {
         return npcs;
+    }
+    public ArrayList<PowerUp> getPowerUps() {
+        return powerUps;
     }
 
     // returns all active enemies (enemies that are a part of the current update cycle) -- this changes every frame by the Camera class
@@ -314,16 +330,27 @@ public abstract class Map {
     public ArrayList<NPC> getActiveNPCs() {
         return camera.getActiveNPCs();
     }
+    
+    // returns all active power ups (power ups that are a part of the current update cycle) -- this changes every frame by the Camera class
+    public ArrayList<PowerUp> getActivePowerUps() {
+        return camera.getActivePowerUps();
+    }
+    
+    // returns all active player projectiles (player projectiles that are a part of the current update cycle) -- this changes every frame by the Camera class
+    public ArrayList<PlayerProjectile> getActivePlayerProjectiles() {
+        return camera.getActivePlayerProjectiles();
+    }
 
     // add an enemy to the map's list of enemies
     public void addEnemy(Enemy enemy) {
         enemy.setMap(this);
         this.enemies.add(enemy);
     }
-
-    public void addPowerUp(PowerUp powerUp) {
-        powerUp.setMap(this);
-        this.powerUps.add(powerUp);
+    
+    // add a player projectile to the map's list of player projectiles
+    public void addPlayerProjectile(PlayerProjectile playerProjectile) {
+    	playerProjectile.setMap(this);
+        this.playerProjectiles.add(playerProjectile);
     }
 
     // add an enhanced map tile to the map's list of enhanced map tiles
@@ -336,6 +363,12 @@ public abstract class Map {
     public void addNPC(NPC npc) {
         npc.setMap(this);
         this.npcs.add(npc);
+    }
+    
+    // add a power up to the map's list of power ups
+    public void addPowerUp(PowerUp powerUp) {
+        powerUp.setMap(this);
+        this.powerUps.add(powerUp);
     }
 
     public void setAdjustCamera(boolean adjustCamera) {

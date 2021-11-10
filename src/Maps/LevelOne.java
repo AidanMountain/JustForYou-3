@@ -11,7 +11,7 @@ import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
 import Utils.Point;
-
+import PowerUps.*;
 import java.util.ArrayList;
 
 public class LevelOne extends Map {
@@ -67,5 +67,14 @@ public class LevelOne extends Map {
         npcs.add(new Walrus(getPositionByTileIndex(30, 14).subtract(new Point(0, 13)), this, "You look lost! You need to get home!"));
 
         return npcs;
+    }
+    
+    @Override
+    public ArrayList<PowerUp> loadPowerUps() {
+        ArrayList<PowerUp> powerUps = new ArrayList<>();
+
+        powerUps.add(new Milk(getPositionByTileIndex(16, 12)));
+
+        return powerUps;
     }
 }

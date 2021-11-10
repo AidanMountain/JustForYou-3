@@ -1,28 +1,22 @@
 package Level;
 
-import GameObject.SpriteSheet;
+import Engine.GraphicsHandler;
+import GameObject.*;
 
-/*
-TODO: might delete cause isnt needed if powerup doesnt work as an enemy
- */
+// This class is a base class for all power ups in the game -- all power ups should extend from it
 public class PowerUp extends MapEntity {
 
     public PowerUp(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
+        setIsRespawnable(false);
     }
 
-    public void initialize() {
-        super.initialize();
-    }
-
-    public void update(Enemy enemy) {
+    public void update(Player player) {
         super.update();
-        if (intersects(enemy)) {
-            touchedEnemy(enemy);
-        }
     }
 
-    public void touchedEnemy(Enemy enemy) {
-        enemy.hurtEnemy(this);
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        super.draw(graphicsHandler);
     }
 }
