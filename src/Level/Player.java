@@ -501,7 +501,10 @@ public abstract class Player extends GameObject {
 
     // other entities can call this to tell the player they beat a level
     public void completeLevel() {
+        File levelComplete = new File("Resources/levelComplete.wav");
         levelState = LevelState.LEVEL_COMPLETED;
+    	PlaySound(levelComplete,0.15);
+
     }
 
     // if player has beaten level, this will be the update cycle
@@ -539,6 +542,7 @@ public abstract class Player extends GameObject {
 
     // if player has died, this will be the update cycle
     public void updatePlayerDead() {
+    	File hurt = new File("Resources/HurtCry.wav");
         // change player animation to DEATH
         if (!currentAnimationName.startsWith("DEATH")) {
             if (facingDirection == Direction.RIGHT) {
@@ -556,6 +560,7 @@ public abstract class Player extends GameObject {
             		currentAnimationName = "DEATH_LEFT";
             	}
             }
+            PlaySound(hurt, 0.15);
             super.update();
         }
         // if death animation not on last frame yet, continue to play out death animation
@@ -672,13 +677,19 @@ public abstract class Player extends GameObject {
 
             if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
                 int hairballX;
+                File hairBallSound = new File("Resources/HairBallSound.wav");
+
                 float movementSpeed;
                 if (facingDirection == Direction.RIGHT) {
                     hairballX = Math.round(getX()) + getScaledWidth();
                     movementSpeed = 1.5f;
+                    PlaySound(hairBallSound, 0.15);
+
                 } else {
                     hairballX = Math.round(getX());
                     movementSpeed = -1.5f;
+                    PlaySound(hairBallSound, 0.15);
+
                 }
 
                 // define where hairball will spawn on the map (y location) relative to player's location

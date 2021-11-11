@@ -18,8 +18,15 @@ import Utils.Point;
 // This class is for the walrus NPC
 public class Human extends NPC {
 
+	protected double xDistFromPlayer;
+    protected double yDistFromPlayer;
+    protected double dist;
+
 	public Human(Point location, Map map) {
 		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Human.png"), 64, 63), "TAIL_DOWN", 5000);
+	}
+	public Human(Point location, Map map, String speech) {
+		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Human.png"), 24, 24), "TAIL_DOWN", 5000, speech);
 	}
 
 	@Override
@@ -29,9 +36,15 @@ public class Human extends NPC {
 
 	@Override
 	public void update(Player player) {
+		xDistFromPlayer = Math.pow((this.getX() - player.getX()), 2);
+        yDistFromPlayer = Math.pow((this.getY() - player.getY()), 2);
+        dist = Math.sqrt(xDistFromPlayer + yDistFromPlayer);
+        
 		// while npc is being talked to, it raises its tail up (in excitement?)
 		if (talkedTo) {
 			currentAnimationName = "TAIL_UP";
+		} else if (dist < 150 && !this.getTalkedTo()) {
+			currentAnimationName = "PLAYER_CLOSE";
 		} else {
 			currentAnimationName = "TAIL_DOWN";
 		}
@@ -46,6 +59,9 @@ public class Human extends NPC {
 						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
 				put("TAIL_UP", new Frame[] { new FrameBuilder(spriteSheet.getSprite(1, 0), 0).withScale(3)
 						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+				put("PLAYER_CLOSE", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 1), 0).withScale(3)
+	                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+			
 			}
 		};
 	}
@@ -60,9 +76,10 @@ public class Human extends NPC {
 		// draws a box with a border (think like a speech box)
 		graphicsHandler.drawFilledRectangleWithBorder(Math.round(getCalibratedXLocation() + 40),
 				Math.round(getCalibratedYLocation() - 24), 90, 25, Color.WHITE, Color.BLACK, 2);
-
+/*
 		// draws message "Hello" in the above speech box
 		message.setLocation(getCalibratedXLocation() + 44, getCalibratedYLocation() - 8);
 		message.draw(graphicsHandler);
+		*/
 	}
 }
