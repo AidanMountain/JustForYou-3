@@ -12,7 +12,12 @@ import Utils.Direction;
 import Utils.Point;
 import Utils.Stopwatch;
 
+import java.io.File;
 import java.util.HashMap;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 // This class is for the green dinosaur enemy that shoots fireballs
 // It walks back and forth between two set points (startLocation and endLocation)
@@ -28,6 +33,9 @@ public class DinosaurEnemy extends Enemy {
     private Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
+    File FireBallSound = new File("Resources/FireBall.wav");
+    public static float dB;
+
 
     // timer is used to determine when a fireball is to be shot out
     protected Stopwatch shootTimer = new Stopwatch();
@@ -75,6 +83,7 @@ public class DinosaurEnemy extends Enemy {
         // if shoot timer is up and dinosaur is not currently shooting, set its state to SHOOT
         if (shootTimer.isTimeUp() && dinosaurState != DinosaurState.SHOOT) {
             dinosaurState = DinosaurState.SHOOT;
+            PlaySound(FireBallSound,0.15);
         }
 
         super.update(player);
@@ -206,6 +215,28 @@ public class DinosaurEnemy extends Enemy {
             });
         }};
     }
+    public static void PlaySound(File Sound, double vol)
+    {
+        try
+        {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(Sound));
+            clip.getLevel();
+            setVol(vol,clip);
+            clip.start();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public static void setVol(double vol, Clip clip)
+    {
+        FloatControl gain = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+        dB = (float)(Math.log(vol)/(Math.log(10)) * 20);
+        gain.setValue(dB);
+    }
+    
 
     public enum DinosaurState {
         WALK, SHOOT

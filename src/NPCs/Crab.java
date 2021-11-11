@@ -18,21 +18,30 @@ import Utils.Point;
 // This class is for the walrus NPC
 public class Crab extends NPC {
 
+	protected double xDistFromPlayer;
+    protected double yDistFromPlayer;
+    protected double dist;
+
 	public Crab(Point location, Map map) {
 		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Crab.png"), 31, 31), "TAIL_DOWN", 5000);
 	}
-
-	@Override
-	protected SpriteFont createMessage() {
-		return new SpriteFont("Howdy!", getX(), getY() - 10, "Arial", 12, Color.BLACK);
+	public Crab(Point location, Map map, String speech) {
+		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Crab.png"), 31, 31), "TAIL_DOWN", 5000);
 	}
+
+	//@Override
+	//protected SpriteFont createMessage() {
+	//	return new SpriteFont("Howdy!", getX(), getY() - 10, "Arial", 12, Color.BLACK);
+	//}
 
 	@Override
 	public void update(Player player) {
 		// while npc is being talked to, it raises its tail up (in excitement?)
 		if (talkedTo) {
 			currentAnimationName = "TAIL_UP";
-		} else {
+		} else if (dist < 150 && !this.getTalkedTo()) {
+			currentAnimationName = "PLAYER_CLOSE";
+		}else {
 			currentAnimationName = "TAIL_DOWN";
 		}
 		super.update(player);
@@ -46,15 +55,17 @@ public class Crab extends NPC {
 						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
 				put("TAIL_UP", new Frame[] { new FrameBuilder(spriteSheet.getSprite(1, 0), 0).withScale(3)
 						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+				put("PLAYER_CLOSE", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 1), 0).withScale(3)
+	                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
 			}
 		};
 	}
-
+//hello
 	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		super.draw(graphicsHandler);
 	}
-
+/*
 	@Override
 	public void drawMessage(GraphicsHandler graphicsHandler) {
 		// draws a box with a border (think like a speech box)
@@ -62,7 +73,7 @@ public class Crab extends NPC {
 				Math.round(getCalibratedYLocation() - 24), 50, 25, Color.WHITE, Color.BLACK, 2);
 
 		// draws message "Hello" in the above speech box
-		message.setLocation(getCalibratedXLocation() + 2, getCalibratedYLocation() - 8);
-		message.draw(graphicsHandler);
-	}
+		//message.setLocation(getCalibratedXLocation() + 2, getCalibratedYLocation() - 8);
+		//message.draw(graphicsHandler);
+	}*/
 }
