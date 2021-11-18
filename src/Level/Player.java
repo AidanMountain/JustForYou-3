@@ -509,6 +509,7 @@ public abstract class Player extends GameObject {
 
     // if player has beaten level, this will be the update cycle
     public void updateLevelCompleted() {
+    	Hairball.setNum(0);
         // if player is not on ground, player should fall until it touches the ground
         if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this)) {
         	if(milkedUp) {
@@ -542,6 +543,7 @@ public abstract class Player extends GameObject {
 
     // if player has died, this will be the update cycle
     public void updatePlayerDead() {
+    	Hairball.setNum(0);
     	File hurt = new File("Resources/HurtCry.wav");
         // change player animation to DEATH
         if (!currentAnimationName.startsWith("DEATH")) {
@@ -676,34 +678,40 @@ public abstract class Player extends GameObject {
             powerState = PowerState.SAFE;
 
             if (previousPowerState == PowerState.SAFE && powerState == PowerState.SAFE) {
-                int hairballX;
-                File hairBallSound = new File("Resources/HairBallSound.wav");
+               
+            	//Checks if there are 3 hairballs on screen.  If there are, don't shoot
+            	if(Hairball.getNum() <= 2)
+            	{
+            		int hairballX;
+            		File hairBallSound = new File("Resources/HairBallSound.wav");
 
-                float movementSpeed;
-                if (facingDirection == Direction.RIGHT) {
-                    hairballX = Math.round(getX()) + getScaledWidth();
-                    movementSpeed = 1.5f;
-                    PlaySound(hairBallSound, 0.15);
+            		float movementSpeed;
+            		if (facingDirection == Direction.RIGHT) {
+            			hairballX = Math.round(getX()) + getScaledWidth();
+            			movementSpeed = 1.5f;
+            			PlaySound(hairBallSound, 0.15);
 
-                } else {
-                    hairballX = Math.round(getX());
-                    movementSpeed = -1.5f;
-                    PlaySound(hairBallSound, 0.15);
+            		} else {
+            			hairballX = Math.round(getX());
+            			movementSpeed = -1.5f;
+            			PlaySound(hairBallSound, 0.15);
 
-                }
+            		}
 
-                // define where hairball will spawn on the map (y location) relative to player's location
+            		// define where hairball will spawn on the map (y location) relative to player's location
 
-                int hairballY = Math.round(getY()) + 20;
-                if(playerState == PlayerState.CROUCHING) hairballY += 10;
+            		int hairballY = Math.round(getY()) + 20;
+            		if(playerState == PlayerState.CROUCHING) hairballY += 10;
 
-                //create a Hairball enemy
-                Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
+            		//create a Hairball enemy
+            		Hairball hairball = new Hairball(new Point(hairballX, hairballY), movementSpeed, 2000);
 
-                // add hairball enemy to the map for it to offically spawn in the level
-                map.addPlayerProjectile(hairball);
-                powerState = PowerState.FIRE;
-                keyLocker.lockKey(POWERUP_ONE_KEY);
+            		// add hairball enemy to the map for it to offically spawn in the level
+            		map.addPlayerProjectile(hairball);
+            		powerState = PowerState.FIRE;
+            		keyLocker.lockKey(POWERUP_ONE_KEY);
+            	}
+
             }
         }
     }

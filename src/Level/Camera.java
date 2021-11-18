@@ -82,12 +82,7 @@ public class Camera extends Rectangle {
         }
 
         for (PlayerProjectile playerProjectile : activePlayerProjectiles) {
-            /*
-            TODO: Possible BUG here. If there are no enemies in the camera view then the hairball stays in place.
-             */
-            for (Enemy enemy : activeEnemies) {
-            	playerProjectile.update(enemy);
-            }
+            playerProjectile.update(activeEnemies);
         }
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
