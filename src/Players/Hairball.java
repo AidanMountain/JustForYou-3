@@ -16,6 +16,8 @@ import java.util.HashMap;
 
 public class Hairball extends PlayerProjectile {
     private float movementSpeed;
+    private static int numShots;
+    private boolean removedHairball;
     private Stopwatch existenceTimer = new Stopwatch();
 
     public Hairball(Point location, float movementSpeed, int existenceTime) {
@@ -23,7 +25,8 @@ public class Hairball extends PlayerProjectile {
         this.movementSpeed = movementSpeed;
         existenceTimer.setWaitTime(existenceTime);
         isRespawnable = false;
-
+        removedHairball = false;
+        numShots++;
         initialize();
     }
 
@@ -38,6 +41,15 @@ public class Hairball extends PlayerProjectile {
             moveXHandleCollision(movementSpeed);
             super.update(enemy);
         }
+
+        if(numShots < 0) numShots = 0;
+        
+        //If a hairball gets removed and it hasn't already been removed from the counter, remove one from the counter
+        if(this.mapEntityStatus == MapEntityStatus.REMOVED && !removedHairball)
+        	{
+        		numShots--;
+        		removedHairball = true;
+        	}
     }
 
     @Override
@@ -53,6 +65,17 @@ public class Hairball extends PlayerProjectile {
     public void touchedEnemy(Enemy enemy) {
         super.touchedEnemy(enemy);
         this.mapEntityStatus = MapEntityStatus.REMOVED;
+
+    }
+    
+    public static void setNum(int num)
+    {
+    	numShots = num;
+    }
+    
+    public static int getNum()
+    {
+    	return numShots;
     }
 
     @Override
