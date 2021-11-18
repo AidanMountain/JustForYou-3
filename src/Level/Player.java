@@ -711,6 +711,7 @@ public abstract class Player extends GameObject {
             		powerState = PowerState.FIRE;
             		keyLocker.lockKey(POWERUP_ONE_KEY);
             	}
+
             }
         }
     }
