@@ -2,6 +2,8 @@ package Level;
 
 import GameObject.SpriteSheet;
 
+import java.util.ArrayList;
+
 public class PlayerProjectile extends MapEntity {
 
     public PlayerProjectile(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
@@ -12,9 +14,9 @@ public class PlayerProjectile extends MapEntity {
         super.initialize();
     }
 
-    public void update(Enemy enemy) {
+    public void update(ArrayList<Enemy> enemies) {
         super.update();
-        if(enemy != null) {
+        for (Enemy enemy : enemies) {
             if (intersects(enemy)) {
                 touchedEnemy(enemy);
             }
