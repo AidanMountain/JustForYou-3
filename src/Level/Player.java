@@ -688,12 +688,12 @@ public abstract class Player extends GameObject {
             		float movementSpeed;
             		if (facingDirection == Direction.RIGHT) {
             			hairballX = Math.round(getX()) + getScaledWidth();
-            			movementSpeed = 1.5f;
+            			movementSpeed = 3.75f;
             			PlaySound(hairBallSound, 0.15);
 
             		} else {
             			hairballX = Math.round(getX());
-            			movementSpeed = -1.5f;
+            			movementSpeed = -3.75f;
             			PlaySound(hairBallSound, 0.15);
 
             		}
