@@ -12,6 +12,7 @@ import Utils.Direction;
 import Utils.Point;
 import Utils.Stopwatch;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Hairball extends PlayerProjectile {
@@ -28,7 +29,7 @@ public class Hairball extends PlayerProjectile {
     }
 
     @Override
-    public void update(Enemy enemy) {
+    public void update(ArrayList<Enemy> enemies) {
         // if timer is up, set map entity status to REMOVED
         // the camera class will see this next frame and remove it permanently from the map
         if (existenceTimer.isTimeUp()) {
@@ -36,7 +37,7 @@ public class Hairball extends PlayerProjectile {
         } else {
             // move fireball forward
             moveXHandleCollision(movementSpeed);
-            super.update(enemy);
+            super.update(enemies);
         }
     }
 
