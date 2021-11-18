@@ -82,9 +82,13 @@ public class Camera extends Rectangle {
         }
 
         for (PlayerProjectile playerProjectile : activePlayerProjectiles) {
-            /*
-            TODO: Possible BUG here. If there are no enemies in the camera view then the hairball stays in place.
-             */
+
+            //temp fix for hairballs not moving if there are no enemies
+            //However this current implementation means the speed of the hairball
+            //is directly related to the number of enemies on screen
+            if(activeEnemies.size() == 0) {
+                playerProjectile.update(null);
+            }
             for (Enemy enemy : activeEnemies) {
             	playerProjectile.update(enemy);
             }

@@ -14,8 +14,10 @@ public class PlayerProjectile extends MapEntity {
 
     public void update(Enemy enemy) {
         super.update();
-        if (intersects(enemy)) {
-            touchedEnemy(enemy);
+        if(enemy != null) {
+            if (intersects(enemy)) {
+                touchedEnemy(enemy);
+            }
         }
     }
 
