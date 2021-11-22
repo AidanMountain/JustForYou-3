@@ -1,5 +1,7 @@
 package Level;
 
+
+import Builders.FrameBuilder;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -77,6 +79,20 @@ public class NPC extends MapEntity {
 	public void update(Player player) {
 		super.update();
 		checkTalkedTo(player);
+
+		double xDistFromPlayer = Math.pow((this.getX() - player.getX()), 2);
+		double yDistFromPlayer = Math.pow((this.getY() - player.getY()), 2);
+		double dist = Math.sqrt(xDistFromPlayer + yDistFromPlayer);
+
+		// while npc is being talked to, it raises its tail up (in excitement?)
+		if (talkedTo) {
+			currentAnimationName = "TAIL_UP";
+		} else if (dist < 150 && !this.getTalkedTo()) {
+			currentAnimationName = "PLAYER_CLOSE";
+		}
+		else {
+			currentAnimationName = "TAIL_DOWN";
+		}
 	}
 
 	public void checkTalkedTo(Player player) {
@@ -106,7 +122,21 @@ public class NPC extends MapEntity {
 		message.setLocation(getCalibratedXLocation() + 2, getCalibratedYLocation() - 8);
 		message.draw(graphicsHandler);
 	}
-	
+
+	@Override
+	public HashMap<String, Frame[]> getAnimations(SpriteSheet spriteSheet) {
+		return new HashMap<String, Frame[]>() {
+			{
+				put("TAIL_DOWN", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 0), 0).withScale(3)
+						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+				put("TAIL_UP", new Frame[] { new FrameBuilder(spriteSheet.getSprite(1, 0), 0).withScale(3)
+						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+				put("PLAYER_CLOSE", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 1), 0).withScale(3)
+						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
+			}
+		};
+	}
+
 	public boolean getTalkedTo(){ return talkedTo;}
 	
 }
