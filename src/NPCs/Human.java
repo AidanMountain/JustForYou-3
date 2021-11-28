@@ -23,7 +23,7 @@ public class Human extends NPC {
     protected double dist;
 
 	public Human(Point location, Map map) {
-		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Human.png"), 64, 63), "TAIL_DOWN", 5000);
+		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Human.png"), 63, 63), "TAIL_DOWN", 5000);
 	}
 	public Human(Point location, Map map, String speech) {
 		super(location.x, location.y, new SpriteSheet(ImageLoader.load("Human.png"), 24, 24), "TAIL_DOWN", 5000, speech);
