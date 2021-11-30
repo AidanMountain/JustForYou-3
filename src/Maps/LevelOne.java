@@ -8,7 +8,7 @@ import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
 import NPCs.Walrus;
-import Tilesets.CommonTileset;
+import Tilesets.MasterMapTileset;
 import Utils.Direction;
 import Utils.Point;
 import PowerUps.*;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class LevelOne extends Map {
 
-    public LevelOne(Point start){super("test_map.txt", new CommonTileset(), start);}
+    public LevelOne(Point start){super("test_map.txt", new MasterMapTileset(), start);}
 
     public LevelOne() { this(new Point(1, 11)); }
 
