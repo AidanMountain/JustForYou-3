@@ -39,7 +39,6 @@ public class LevelTwo extends Map {
         enemies.add(new BugEnemy(getPositionByTileIndex(42, 22), Direction.LEFT));
 
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(21, 12).addY(2), getPositionByTileIndex(24, 12).addY(2), Direction.RIGHT));
-        enemies.add(new DinosaurEnemy(getPositionByTileIndex(61, 15).addY(2), getPositionByTileIndex(64, 15).addY(2), Direction.RIGHT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(113, 18).addY(2), getPositionByTileIndex(117, 18).addY(2), Direction.LEFT));
         enemies.add(new DinosaurEnemy(getPositionByTileIndex(93, 11).addY(2), getPositionByTileIndex(97, 11).addY(2), Direction.LEFT));
         return enemies;
@@ -81,28 +80,18 @@ public class LevelTwo extends Map {
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(35, 13),
+                getPositionByTileIndex(35, 14),
+                getPositionByTileIndex(40, 14),
+                TileType.JUMP_THROUGH_PLATFORM,
+                3,
+                new Rectangle(0, 6,16,4),
+                Direction.RIGHT
+        ));
+
+        enhancedMapTiles.add(new HorizontalMovingPlatform(
+                ImageLoader.load("GreenPlatform.png"),
                 getPositionByTileIndex(40, 13),
-                TileType.JUMP_THROUGH_PLATFORM,
-                3,
-                new Rectangle(0, 6,16,4),
-                Direction.RIGHT
-        ));
-
-        enhancedMapTiles.add(new HorizontalMovingPlatform(
-                ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(38, 15),
-                getPositionByTileIndex(47, 15),
-                TileType.JUMP_THROUGH_PLATFORM,
-                3,
-                new Rectangle(0, 6,16,4),
-                Direction.RIGHT
-        ));
-
-        enhancedMapTiles.add(new HorizontalMovingPlatform(
-                ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(45,14),
-                getPositionByTileIndex(52,14),
+                getPositionByTileIndex(42, 13),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
                 new Rectangle(0, 6,16,4),
@@ -121,7 +110,7 @@ public class LevelTwo extends Map {
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(53,15),
+                getPositionByTileIndex(55,15),
                 getPositionByTileIndex(60,15),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
@@ -166,7 +155,9 @@ public class LevelTwo extends Map {
         }
 
         enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(33, 10)));
+        enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(47, 8)));
         enhancedMapTiles.add(new CheckPoint(getPositionByTileIndex(82, 15)));
+        
 
         return enhancedMapTiles;
     }
