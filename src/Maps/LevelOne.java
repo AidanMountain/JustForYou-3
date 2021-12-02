@@ -15,10 +15,12 @@ import PowerUps.*;
 import java.util.ArrayList;
 
 public class LevelOne extends Map {
+	
+    public LevelOne(){super("test_map.txt", new MasterMapTileset(), new Point(1, 11));}
 
-    public LevelOne(Point start){super("test_map.txt", new MasterMapTileset(), start);}
+    public LevelOne(Point start, Achievement achievement){super("test_map.txt", new MasterMapTileset(), start, achievement);}
 
-    public LevelOne() { this(new Point(1, 11)); }
+    public LevelOne(Achievement achievement) { this(new Point(1, 11), achievement); }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
@@ -65,7 +67,7 @@ public class LevelOne extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        npcs.add(new Walrus(getPositionByTileIndex(30, 14).subtract(new Point(0, 13)), this, "You look lost! You need to get home!"));
+        npcs.add(new Walrus(getPositionByTileIndex(30, 14).subtract(new Point(0, 13)), this, "You look lost! You need to get home!", achievement));
 
         return npcs;
     }

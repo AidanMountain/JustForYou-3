@@ -3,7 +3,9 @@ package Screens;
 import java.awt.Color;
 
 import javax.swing.JFrame;
-
+import Level.Player;
+import Level.PlayerListener;
+import Players.Cat;
 import Engine.Config;
 import Engine.GamePanel;
 import Engine.GraphicsHandler;
@@ -53,7 +55,7 @@ public class SettingsScreen extends Screen{
     private Config config;
     private MusicData mD;
     private GameWindow gameWindow;
-    
+    protected Player player;
     protected boolean settingsActive = false;
     protected boolean volActive = false;
     protected boolean aspectActive = false;
@@ -104,12 +106,13 @@ public class SettingsScreen extends Screen{
         largeRatioLabel.setOutlineThickness(2);
         keyTimer.setWaitTime(200);
 		keyLocker.lockKey(Key.ESC);
+        this.player = new Cat(background.getPlayerStartPosition().x, background.getPlayerStartPosition().y);
 	}
 
 	@Override
 	public void update() {
 		//update background map (to play title animations)
-		  background.update(null);
+		  background.update(player);
 
         // if arrow keys are pressed, user navigates the settings menu
         if(Keyboard.isKeyDown(Key.RIGHT) && keyTimer.isTimeUp()) {
@@ -211,7 +214,7 @@ public class SettingsScreen extends Screen{
         		setScreenLarge();
         	}
         }
-        // if space is escape, go back to main menu
+        // if escape is pressed, go back to main menu
 	if(Keyboard.isKeyUp(Key.ESC)) {
 		keyLocker.unlockKey(Key.ESC);
 		
