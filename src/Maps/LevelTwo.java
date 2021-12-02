@@ -10,6 +10,7 @@ import Level.*;
 
 import NPCs.DashingDuck;
 import NPCs.Walrus;
+import PowerUps.Milk;
 import Tilesets.LevelTwoTileset;
 
 import Utils.Direction;
@@ -174,8 +175,16 @@ public class LevelTwo extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        npcs.add(new DashingDuck(getPositionByTileIndex(10, 15).subtract(new Point(0, 13)), this));
+        npcs.add(new DashingDuck(getPositionByTileIndex(10, 15).subtract(new Point(0, 13)), this, "Press One To Attack!"));
 
         return npcs;
+    }
+    @Override
+    public ArrayList<PowerUp> loadPowerUps() {
+        ArrayList<PowerUp> powerUps = new ArrayList<>();
+
+        powerUps.add(new Milk(getPositionByTileIndex(21, 12)));
+
+        return powerUps;
     }
 }

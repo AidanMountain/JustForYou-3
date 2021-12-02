@@ -7,6 +7,7 @@ import Screens.IntroductionScreen;
 import Screens.InstructionScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.SelectCharacterScreen;
 import Screens.SettingsScreen;
 import Level.MusicData;
 
@@ -69,6 +70,10 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case SETTINGS:
 						currentScreen = new SettingsScreen(this, gameWindow, musicData);
+						break;
+					case CHANGECHARACTER:
+						currentScreen = new SelectCharacterScreen(this);
+						break;
 				}
 				currentScreen.initialize();
 			}
