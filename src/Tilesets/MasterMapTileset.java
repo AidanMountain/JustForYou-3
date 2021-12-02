@@ -581,6 +581,42 @@ public class MasterMapTileset  extends Tileset {
 
         mapTiles.add(tvTableTile);
 
+        // small cloud
+        Frame cloudFrame = new FrameBuilder(getSubImage(4, 8), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder cloudTile = new MapTileBuilder(cloudFrame);
+
+        mapTiles.add(cloudTile);
+
+        // left half cloud
+        Frame leftCloudFrame = new FrameBuilder(getSubImage(4, 9), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder leftCloudTile = new MapTileBuilder(leftCloudFrame);
+
+        mapTiles.add(leftCloudTile);
+
+        // right half cloud
+        Frame rightCloudFrame = new FrameBuilder(getSubImage(4, 10), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder rightCloudTile = new MapTileBuilder(rightCloudFrame);
+
+        mapTiles.add(rightCloudTile);
+        
+        // top cloud
+        Frame topCloudFrame = new FrameBuilder(getSubImage(4, 11), 0)
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder topCloudTile = new MapTileBuilder(topCloudFrame);
+
+        mapTiles.add(topCloudTile);
+
 
 
         return mapTiles;

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
+import Engine.Screen;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
@@ -21,11 +22,20 @@ public class NPC extends MapEntity {
 	protected SpriteFont message;
 	protected int talkedToTime;
 	protected Stopwatch timer = new Stopwatch();
+	protected Achievement associatedAchievement;
+    protected boolean foundAchievement;
+    protected boolean achievementTimerStarted;
+    protected boolean achievementTimerEnded;
+    protected Stopwatch achievementTimer = new Stopwatch();
 
 	public NPC(float x, float y, SpriteSheet spriteSheet, String startingAnimation, int talkedToTime) {
 		super(x, y, spriteSheet, startingAnimation);
 		this.message = createMessage();
 		this.talkedToTime = talkedToTime;
+		associatedAchievement = null;
+        foundAchievement = false;
+        achievementTimerStarted = false;
+        achievementTimerEnded = false;
 	}
 	
 	public NPC(float x, float y, SpriteSheet spriteSheet, String startingAnimation, int talkedToTime, String speech) {
@@ -33,6 +43,31 @@ public class NPC extends MapEntity {
 		this.message = createMessage();
 		this.message.setText(speech);
 		this.talkedToTime = talkedToTime;
+		associatedAchievement = null;
+        foundAchievement = false;
+        achievementTimerStarted = false;
+        achievementTimerEnded = false;
+	}
+	
+	public NPC(float x, float y, SpriteSheet spriteSheet, String startingAnimation, int talkedToTime, Achievement associatedAchievement) {
+		super(x, y, spriteSheet, startingAnimation);
+		this.message = createMessage();
+		this.talkedToTime = talkedToTime;
+		this.associatedAchievement = associatedAchievement;
+        foundAchievement = false;
+        achievementTimerStarted = false;
+        achievementTimerEnded = false;
+	}
+	
+	public NPC(float x, float y, SpriteSheet spriteSheet, String startingAnimation, int talkedToTime, String speech, Achievement associatedAchievement) {
+		super(x, y, spriteSheet, startingAnimation);
+		this.message = createMessage();
+		this.message.setText(speech);
+		this.talkedToTime = talkedToTime;
+		this.associatedAchievement = associatedAchievement;
+        foundAchievement = false;
+        achievementTimerStarted = false;
+        achievementTimerEnded = false;
 	}
 
 	public NPC(float x, float y, HashMap<String, Frame[]> animations, String startingAnimation, int talkedToTime) {
@@ -99,6 +134,12 @@ public class NPC extends MapEntity {
 		if (intersects(player) && Keyboard.isKeyDown(Key.SPACE)) {
 			talkedTo = true;
 			timer.setWaitTime(talkedToTime);
+			if(associatedAchievement != null && !Screen.getAchievementStatus(associatedAchievement.getId())){
+                foundAchievement = true;
+                Screen.anyAchievementFound = true;
+                Screen.setAchievementStatus(associatedAchievement.getId(), true);
+            }
+
 		}
 		;
 		if (talkedTo && timer.isTimeUp()) {
@@ -112,6 +153,16 @@ public class NPC extends MapEntity {
 		if (message != null && talkedTo) {
 			drawMessage(graphicsHandler);
 		}
+		if(foundAchievement && !achievementTimerEnded){
+            if(!achievementTimerStarted) {
+                achievementTimer.setWaitTime(5000);
+                achievementTimerStarted = true;
+            }
+            associatedAchievement.draw(graphicsHandler);
+            if(achievementTimer.isTimeUp()){
+                achievementTimerEnded = true;
+            }
+        }
 	}
 
 	public void drawMessage(GraphicsHandler graphicsHandler) {

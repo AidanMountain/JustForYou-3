@@ -37,13 +37,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private Config config;
     protected int currentLevel;
     private MusicData mD;
-//    private Game game;
-//    public static Camera cam;
-
     private boolean isGamePaused = false;
     private SpriteFont pauseLabel;
     private KeyLocker keyLocker = new KeyLocker();
     private final Key pauseKey = Key.P;
+    protected Achievement levelOneAchievement;
 
     //Pause Screen Info and Buttons
     protected int currentMenuItemHovered = 1; // current menu item being "hovered" over
@@ -127,17 +125,18 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-
+        levelOneAchievement = new Achievement("Journey Begins", ImageLoader.load("LevelOneAchievement.png"), 1);
+    	
         gameWindow.getInputManager().setKeyLocker(keyLocker);
 
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
                 if(player.getCurrentCheckPoint() != null){
-                    this.map = new LevelOne(player.getCurrentCheckPoint());
+                    this.map = new LevelOne(player.getCurrentCheckPoint(), levelOneAchievement);
                 }
                 else{
-                    this.map = new LevelOne();
+                    this.map = new LevelOne(levelOneAchievement);
                 }
                 map.reset();
                 break;

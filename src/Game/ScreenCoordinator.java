@@ -1,13 +1,7 @@
 package Game;
 
 import Engine.*;
-
-import Screens.CreditsScreen;
-import Screens.IntroductionScreen;
-import Screens.InstructionScreen;
-import Screens.MenuScreen;
-import Screens.PlayLevelScreen;
-import Screens.SettingsScreen;
+import Screens.*;
 import Level.MusicData;
 
 /*
@@ -69,6 +63,10 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case SETTINGS:
 						currentScreen = new SettingsScreen(this, gameWindow, musicData);
+						break;
+					case ACHIEVEMENTS:
+						currentScreen = new AchievementsScreen(this);
+						break;
 				}
 				currentScreen.initialize();
 			}

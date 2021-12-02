@@ -10,7 +10,7 @@ import Level.*;
 
 import NPCs.DashingDuck;
 import NPCs.Walrus;
-import Tilesets.LevelTwoTileset;
+import Tilesets.MasterMapTileset;
 
 import Utils.Direction;
 import Utils.Point;
@@ -23,7 +23,7 @@ public class LevelTwo extends Map {
         this(new Point(1, 11));
     }
     public LevelTwo(Point spawn) {
-        super("level_two.txt", new LevelTwoTileset(), spawn);
+        super("level_two.txt", new MasterMapTileset(), spawn);
     }
 
     @Override
