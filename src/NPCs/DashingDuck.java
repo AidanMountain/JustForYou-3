@@ -31,37 +31,6 @@ public class DashingDuck extends NPC {
 	}
 
 	@Override
-	public void update(Player player) {
-		xDistFromPlayer = Math.pow((this.getX() - player.getX()), 2);
-        yDistFromPlayer = Math.pow((this.getY() - player.getY()), 2);
-        dist = Math.sqrt(xDistFromPlayer + yDistFromPlayer);
-		
-		// while npc is being talked to, it raises its tail up (in excitement?)
-		if (talkedTo) {
-			currentAnimationName = "TAIL_UP";
-		}else if (dist < 150 && !this.getTalkedTo()) {
-			currentAnimationName = "PLAYER_CLOSE";
-		}else {
-			currentAnimationName = "TAIL_DOWN";
-		}
-		super.update(player);
-	}
-
-	@Override
-	public HashMap<String, Frame[]> getAnimations(SpriteSheet spriteSheet) {
-		return new HashMap<String, Frame[]>() {
-			{
-				put("TAIL_DOWN", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 0), 0).withScale(3)
-						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
-				put("TAIL_UP", new Frame[] { new FrameBuilder(spriteSheet.getSprite(1, 0), 0).withScale(3)
-						.withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
-				put("PLAYER_CLOSE", new Frame[] { new FrameBuilder(spriteSheet.getSprite(0, 1), 0).withScale(3)
-	                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL).build() });
-			}
-		};
-	}
-
-	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		super.draw(graphicsHandler);
 	}
