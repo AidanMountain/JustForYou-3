@@ -610,10 +610,6 @@ public abstract class Player extends GameObject {
         this.levelState = levelState;
     }
 
-    public void setMapCameraState(boolean setState){
-        map.setAdjustCamera(setState);
-    }
-    
     public void addListener(PlayerListener listener) {
         listeners.add(listener);
     }

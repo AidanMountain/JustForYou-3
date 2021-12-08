@@ -7,6 +7,7 @@ import Engine.ImageLoader;
 import EnhancedMapTiles.*;
 import GameObject.Rectangle;
 import Level.*;
+import PowerUps.Milk;
 import Tilesets.MasterMapTileset;
 import Utils.Direction;
 import Utils.Point;
@@ -138,4 +139,13 @@ public class LevelThree extends Map {
 
         return enhancedMapTiles;
     }
+    @Override
+    public ArrayList<PowerUp> loadPowerUps() {
+        ArrayList<PowerUp> powerUps = new ArrayList<>();
+
+        powerUps.add(new Milk(getPositionByTileIndex(7, 43)));
+
+        return powerUps;
+    }
+    
 }

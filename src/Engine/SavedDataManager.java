@@ -45,8 +45,13 @@ public class SavedDataManager implements Serializable {
 
             o.close();
             f.close();
-        } catch (ClassNotFoundException | IOException e){
-            System.out.print("No saved game found!");
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

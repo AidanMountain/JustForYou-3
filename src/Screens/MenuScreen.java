@@ -10,9 +10,7 @@ import Utils.Stopwatch;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import Level.Player;
-import Level.PlayerListener;
-import Players.Cat;
+
 import java.awt.*;
 import java.io.IOException;
 
@@ -27,9 +25,8 @@ public class MenuScreen extends Screen {
     protected SpriteFont credits;
     protected SpriteFont usagePrompt;
     protected SpriteFont settings;
-    protected SpriteFont achievements;
+    protected SpriteFont changeCharacter;
     protected Map background;
-    protected Player player;
     protected Stopwatch keyTimer = new Stopwatch();
     protected int pointerLocationX, pointerLocationY;
     protected KeyLocker keyLocker = new KeyLocker();
@@ -58,9 +55,9 @@ public class MenuScreen extends Screen {
         settings = new SpriteFont("SETTINGS", 200, 350, "Comic Sans", 30, new Color(49, 207, 240));
         settings.setOutlineColor(Color.black);
         settings.setOutlineThickness(3);
-        achievements = new SpriteFont("ACHIEVEMENTS", 200, 400, "Comic Sans", 30, new Color(49, 207, 240));
-        achievements.setOutlineColor(Color.black);
-        achievements.setOutlineThickness(3);
+        changeCharacter = new SpriteFont("SELECT CHARACTER", 200, 400, "Comic Sans", 30, new Color(49, 207, 240));
+        changeCharacter.setOutlineColor(Color.black);
+        changeCharacter.setOutlineThickness(3);
         
         usagePrompt = new SpriteFont("Use the Arrow Keys and Enter to use the menu", 30, 40, "Times New Roman", 30, Color.white);
         background = new TitleScreenMap();
@@ -68,12 +65,11 @@ public class MenuScreen extends Screen {
         keyTimer.setWaitTime(200);
         menuItemSelected = -1;
         keyLocker.lockKey(Key.ENTER);
-        this.player = new Cat(background.getPlayerStartPosition().x, background.getPlayerStartPosition().y);
     }
 
     public void update() {
         // update background map (to play tile animations)
-        background.update(player);
+        background.update(null);
 
         // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
         if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) {
@@ -98,7 +94,7 @@ public class MenuScreen extends Screen {
             instructionsMenu.setColor(new Color(49, 207, 240));
             credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
-            achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = (int)playNewGame.getY()-22;
         }
@@ -108,7 +104,7 @@ public class MenuScreen extends Screen {
             instructionsMenu.setColor(new Color(49, 207, 240));
             credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
-            achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = (int)playSavedGame.getY()-22;
         }
@@ -118,7 +114,7 @@ public class MenuScreen extends Screen {
             instructionsMenu.setColor(new Color(255, 215, 0));
             credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
-            achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = (int)instructionsMenu.getY()-22;
         }
@@ -128,7 +124,7 @@ public class MenuScreen extends Screen {
             instructionsMenu.setColor(new Color(49, 207, 240));
             credits.setColor(new Color(255, 215, 0));
             settings.setColor(new Color(49, 207, 240));
-            achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = (int)credits.getY()-22;
         }
@@ -138,7 +134,7 @@ public class MenuScreen extends Screen {
         	instructionsMenu.setColor(new Color(49, 207, 240));
         	credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(255, 215, 0));
-            achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = (int)settings.getY()-22;
         }
@@ -148,11 +144,10 @@ public class MenuScreen extends Screen {
         	instructionsMenu.setColor(new Color(49, 207, 240));
         	credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
-            achievements.setColor(new Color(255, 215, 0));
+            changeCharacter.setColor(new Color(255, 215, 0));
             pointerLocationX = 170;
-            pointerLocationY = (int)achievements.getY()-22;
+            pointerLocationY = (int)changeCharacter.getY()-22;
         }
-            
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
         if (Keyboard.isKeyUp(Key.ENTER)) {
             keyLocker.unlockKey(Key.ENTER);
@@ -181,13 +176,12 @@ public class MenuScreen extends Screen {
                 screenCoordinator.setGameState(GameState.CREDITS);
             }
             else if(menuItemSelected == 4){
-                screenCoordinator.setGameState(GameState.SETTINGS);
+             screenCoordinator.setGameState(GameState.SETTINGS);
             }
-            else if(menuItemSelected == 5){
-                screenCoordinator.setGameState(GameState.ACHIEVEMENTS);
+            else if(menuItemSelected == 5) {
+            	screenCoordinator.setGameState(GameState.CHANGECHARACTER);
             }
         }
-             
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
@@ -198,7 +192,7 @@ public class MenuScreen extends Screen {
         credits.draw(graphicsHandler);
         usagePrompt.draw(graphicsHandler);
         settings.draw(graphicsHandler);
-        achievements.draw(graphicsHandler);
+        changeCharacter.draw(graphicsHandler);
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
     }
 

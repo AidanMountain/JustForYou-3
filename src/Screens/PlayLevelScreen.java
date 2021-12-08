@@ -9,7 +9,8 @@ package Screens;
         import Maps.LevelTwo;
         import Maps.LevelOne;
         import Players.Cat;
-        import SpriteFont.SpriteFont;
+import Players.HumanCharacter;
+import SpriteFont.SpriteFont;
         import Utils.Stopwatch;
         import Engine.GameWindow;
         import Screens.RebuildScreen;
@@ -32,16 +33,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
+    protected SelectCharacterScreen character;
     private GameWindow gameWindow;
     private RebuildScreen rB;
     private Config config;
-    protected int currentLevel;
+    protected int currentLevel = 0;
     private MusicData mD;
+//    private Game game;
+//    public static Camera cam;
+
     private boolean isGamePaused = false;
     private SpriteFont pauseLabel;
     private KeyLocker keyLocker = new KeyLocker();
     private final Key pauseKey = Key.P;
-    protected Achievement levelOneAchievement;
 
     //Pause Screen Info and Buttons
     protected int currentMenuItemHovered = 1; // current menu item being "hovered" over
@@ -52,7 +56,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected SpriteFont pauseHeader;
     protected SpriteFont settingsButton;
     protected SpriteFont mainMenuButton;
-    protected SpriteFont lowVol;
+    protected SpriteFont MuteVol;
     protected SpriteFont midVol;
     protected SpriteFont HighVol;
     protected SpriteFont smallScreen;
@@ -93,9 +97,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         volumeLevel = new SpriteFont("Volume: ", 490, 210, "Comic Sans", 30, new Color (49, 207,240));
         volumeLevel.setOutlineColor(Color.black);
         volumeLevel.setOutlineThickness(3);
-        lowVol = new SpriteFont("Low ", 370, 245, "Comic Sans", 30, new Color (49, 207,240));
-        lowVol.setOutlineColor(Color.black);
-        lowVol.setOutlineThickness(3);
+        MuteVol = new SpriteFont("Mute ", 370, 245, "Comic Sans", 30, new Color (49, 207,240));
+        MuteVol.setOutlineColor(Color.black);
+        MuteVol.setOutlineThickness(3);
         midVol = new SpriteFont("Medium ", 500, 245, "Comic Sans", 30, new Color (49, 207,240));
         midVol.setOutlineColor(Color.black);
         midVol.setOutlineThickness(3);
@@ -125,18 +129,17 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-        levelOneAchievement = new Achievement("Journey Begins", ImageLoader.load("LevelOneAchievement.png"), 1);
-    	
+
         gameWindow.getInputManager().setKeyLocker(keyLocker);
 
         switch (currentLevel) {
             case 0:
                 //TODO: Change this to desired map to start on that map
                 if(player.getCurrentCheckPoint() != null){
-                    this.map = new LevelOne(player.getCurrentCheckPoint(), levelOneAchievement);
+                    this.map = new LevelOne(player.getCurrentCheckPoint());
                 }
                 else{
-                    this.map = new LevelOne(levelOneAchievement);
+                    this.map = new LevelOne();
                 }
                 map.reset();
                 break;
@@ -170,17 +173,27 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         }
 
         // setup player
-        this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+       // this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.reset();
-
-        //        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        if(character.choseCharacter == 0) {
+            this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.player.setMap(map);
+            this.player.addListener(this);
+            this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        }
+        else if(character.choseCharacter == 1) {
+        	this.player = new HumanCharacter(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.player.setMap(map);
+            this.player.addListener(this);
+            this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        }
         if (currentLevel > 0) {
             player.unlockPowerUpOne();
+            
         }
-        this.player.setMap(map);
-        this.player.addListener(this);
-        this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-        this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        
         keyTimer.setWaitTime(200);
     }
 
@@ -330,7 +343,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 bigScreen.setColor(new Color(49, 207, 240));
                 if(currentSettingLevelHovered == 0)
                 {
-                    lowVol.setColor(new Color(255, 215, 0));
+                    MuteVol.setColor(new Color(255, 215, 0));
                     midVol.setColor(new Color(49, 207, 240));
                     HighVol.setColor(new Color(49, 207, 240));
                     pointerLocationX = 330;
@@ -338,7 +351,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 }
                 if(currentSettingLevelHovered == 1)
                 {
-                    lowVol.setColor(new Color(49, 207, 240));
+                    MuteVol.setColor(new Color(49, 207, 240));
                     midVol.setColor(new Color(255, 215, 0));
                     HighVol.setColor(new Color(49, 207, 240));
                     pointerLocationX = 470;
@@ -346,7 +359,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 }
                 if(currentSettingLevelHovered == 2)
                 {
-                    lowVol.setColor(new Color(49, 207, 240));
+                    MuteVol.setColor(new Color(49, 207, 240));
                     midVol.setColor(new Color(49, 207, 240));
                     HighVol.setColor(new Color(255, 215, 0));
                     pointerLocationX = 640;
@@ -356,7 +369,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             }
             else if (settingsMenuItemSelected == 2 && settingsActive == true)
             {
-                lowVol.setColor(new Color(49, 207, 240));
+                MuteVol.setColor(new Color(49, 207, 240));
                 midVol.setColor(new Color(49, 207, 240));
                 HighVol.setColor(new Color(49, 207, 240));
                 aspectActive = true;
@@ -413,7 +426,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                         {
                             if(currentSettingLevelHovered == 0)
                             {
-                                setVolLow();
+                                setVolMute();
                                 settingsActive = false;
                             }
                             if(currentSettingLevelHovered == 1)
@@ -494,7 +507,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             {
                 volumeLevel.draw(graphicsHandler);
                 aspectRatioLevel.draw(graphicsHandler);
-                lowVol.draw(graphicsHandler);
+                MuteVol.draw(graphicsHandler);
                 midVol.draw(graphicsHandler);
                 HighVol.draw(graphicsHandler);
                 smallScreen.draw(graphicsHandler);
@@ -512,10 +525,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         return playLevelScreenState;
     }
 
-    public void setVolLow()
+    public void setVolMute()
     {
-        System.out.println("screen vol low");
-        mD.setVolCall("Low");
+        System.out.println("screen vol Mute");
+        mD.setVolCall("Mute");
         System.out.println("Current Vol: " + vol);
 
     }

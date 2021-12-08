@@ -6,9 +6,7 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
-import Level.Player;
-import Level.PlayerListener;
-import Players.Cat;
+
 import java.awt.*;
 
 public class InstructionScreen extends Screen {
@@ -23,7 +21,6 @@ public class InstructionScreen extends Screen {
     protected SpriteFont instructionsAttack;
     protected SpriteFont instructionsPause;
     protected SpriteFont returnInstructionsLabel;
-    protected Player player;
 
     public InstructionScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -61,12 +58,11 @@ public class InstructionScreen extends Screen {
         returnInstructionsLabel.setOutlineColor(Color.black);
         returnInstructionsLabel.setOutlineThickness(3);
         keyLocker.lockKey(Key.ENTER);
-        this.player = new Cat(background.getPlayerStartPosition().x, background.getPlayerStartPosition().y);
     }
     
     //@Override
     public void update() {
-        background.update(player);
+        background.update(null);
 
         if (Keyboard.isKeyUp(Key.ENTER)) {
             keyLocker.unlockKey(Key.ENTER);

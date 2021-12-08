@@ -3,9 +3,7 @@ package Screens;
 import java.awt.Color;
 
 import javax.swing.JFrame;
-import Level.Player;
-import Level.PlayerListener;
-import Players.Cat;
+
 import Engine.Config;
 import Engine.GamePanel;
 import Engine.GraphicsHandler;
@@ -46,7 +44,7 @@ public class SettingsScreen extends Screen{
     protected KeyLocker keyLocker = new KeyLocker();
     protected SpriteFont settingsLabel;
     protected SpriteFont aspectRatioLabel, lowRatioLabel, mediumRatioLabel, largeRatioLabel;
-    protected SpriteFont volumeLabel, lowVolumeLabel, mediumVolumeLabel, fullVolumeLabel;
+    protected SpriteFont volumeLabel, muteVolumeLabel, mediumVolumeLabel, fullVolumeLabel;
     protected SpriteFont returnSettingsLabel, usagePrompt;
     protected int currentSettingHovered = 0;
     protected int settingSelected = -1;
@@ -55,7 +53,7 @@ public class SettingsScreen extends Screen{
     private Config config;
     private MusicData mD;
     private GameWindow gameWindow;
-    protected Player player;
+    
     protected boolean settingsActive = false;
     protected boolean volActive = false;
     protected boolean aspectActive = false;
@@ -83,9 +81,9 @@ public class SettingsScreen extends Screen{
         volumeLabel = new SpriteFont("Volume:", 205, 125, "Times New Roman", 40, Color.white);
         volumeLabel.setOutlineColor(Color.black);
         volumeLabel.setOutlineThickness(2);
-        lowVolumeLabel = new SpriteFont("Low", 75, 175, "Times New Roman", 30, Color.white);
-        lowVolumeLabel.setOutlineColor(Color.black);
-        lowVolumeLabel.setOutlineThickness(2);
+        muteVolumeLabel = new SpriteFont("Mute", 75, 175, "Times New Roman", 30, Color.white);
+        muteVolumeLabel.setOutlineColor(Color.black);
+        muteVolumeLabel.setOutlineThickness(2);
         mediumVolumeLabel = new SpriteFont("Medium", 225, 175, "Times New Roman", 30, Color.white);
         mediumVolumeLabel.setOutlineColor(Color.black);
         mediumVolumeLabel.setOutlineThickness(2);
@@ -106,13 +104,12 @@ public class SettingsScreen extends Screen{
         largeRatioLabel.setOutlineThickness(2);
         keyTimer.setWaitTime(200);
 		keyLocker.lockKey(Key.ESC);
-        this.player = new Cat(background.getPlayerStartPosition().x, background.getPlayerStartPosition().y);
 	}
 
 	@Override
 	public void update() {
 		//update background map (to play title animations)
-		  background.update(player);
+		  background.update(null);
 
         // if arrow keys are pressed, user navigates the settings menu
         if(Keyboard.isKeyDown(Key.RIGHT) && keyTimer.isTimeUp()) {
@@ -129,7 +126,7 @@ public class SettingsScreen extends Screen{
        
         //sets location for blue square in front of text (pointerLocations)
         if(currentSettingHovered == 0) {
-    		lowVolumeLabel.setColor(Color.yellow);
+    		muteVolumeLabel.setColor(Color.yellow);
     		mediumVolumeLabel.setColor(Color.white);
     		fullVolumeLabel.setColor(Color.white);
     		pointerLocationX = 50;
@@ -139,7 +136,7 @@ public class SettingsScreen extends Screen{
         	largeRatioLabel.setColor(Color.white);
         	}
     	else if(currentSettingHovered == 1) {
-    		lowVolumeLabel.setColor(Color.white);
+    		muteVolumeLabel.setColor(Color.white);
     		mediumVolumeLabel.setColor(Color.yellow);
     		fullVolumeLabel.setColor(Color.white);
     		pointerLocationX = 200;
@@ -149,7 +146,7 @@ public class SettingsScreen extends Screen{
         	largeRatioLabel.setColor(Color.white);
     	}
     	else if(currentSettingHovered == 2) {
-    		lowVolumeLabel.setColor(Color.white);
+    		muteVolumeLabel.setColor(Color.white);
     		mediumVolumeLabel.setColor(Color.white);
     		fullVolumeLabel.setColor(Color.yellow);
     		pointerLocationX = 400;
@@ -165,7 +162,7 @@ public class SettingsScreen extends Screen{
     		largeRatioLabel.setColor(Color.white);
     		pointerLocationX = 50;
             pointerLocationY = 280;
-            lowVolumeLabel.setColor(Color.white);
+            muteVolumeLabel.setColor(Color.white);
         	mediumVolumeLabel.setColor(Color.white);
         	fullVolumeLabel.setColor(Color.white);
     	}
@@ -175,7 +172,7 @@ public class SettingsScreen extends Screen{
     		largeRatioLabel.setColor(Color.white);
     		pointerLocationX = 200;
             pointerLocationY = 280;
-            lowVolumeLabel.setColor(Color.white);
+            muteVolumeLabel.setColor(Color.white);
         	mediumVolumeLabel.setColor(Color.white);
         	fullVolumeLabel.setColor(Color.white);
     	}
@@ -185,7 +182,7 @@ public class SettingsScreen extends Screen{
     		largeRatioLabel.setColor(Color.yellow);
     		pointerLocationX = 400;
             pointerLocationY = 280;
-            lowVolumeLabel.setColor(Color.white);
+            muteVolumeLabel.setColor(Color.white);
         	mediumVolumeLabel.setColor(Color.white);
         	fullVolumeLabel.setColor(Color.white);
     	}
@@ -214,7 +211,7 @@ public class SettingsScreen extends Screen{
         		setScreenLarge();
         	}
         }
-        // if escape is pressed, go back to main menu
+        // if space is escape, go back to main menu
 	if(Keyboard.isKeyUp(Key.ESC)) {
 		keyLocker.unlockKey(Key.ESC);
 		
@@ -231,7 +228,7 @@ public class SettingsScreen extends Screen{
 		settingsLabel.draw(graphicsHandler);
 		returnSettingsLabel.draw(graphicsHandler);
 		volumeLabel.draw(graphicsHandler);
-		lowVolumeLabel.draw(graphicsHandler);
+		muteVolumeLabel.draw(graphicsHandler);
 		mediumVolumeLabel.draw(graphicsHandler);
 		fullVolumeLabel.draw(graphicsHandler);
 		aspectRatioLabel.draw(graphicsHandler);
@@ -244,7 +241,7 @@ public class SettingsScreen extends Screen{
 	public void setVolLow()
     {
         //System.out.println("screen vol low");
-        mD.setVolCall("Low");
+        mD.setVolCall("Mute");
         //System.out.println("Current Vol: " + vol);
 
     }
