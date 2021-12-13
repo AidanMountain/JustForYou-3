@@ -8,7 +8,8 @@ package Screens;
         import Maps.LevelThree;
         import Maps.LevelTwo;
         import Maps.LevelOne;
-        import Players.Cat;
+import Players.Baby;
+import Players.Cat;
         import SpriteFont.SpriteFont;
         import Utils.Stopwatch;
         import Engine.GameWindow;
@@ -32,6 +33,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
+    protected SelectCharacterScreen character;
     private GameWindow gameWindow;
     private RebuildScreen rB;
     private Config config;
@@ -52,7 +54,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected SpriteFont pauseHeader;
     protected SpriteFont settingsButton;
     protected SpriteFont mainMenuButton;
-    protected SpriteFont lowVol;
+    protected SpriteFont muteVol;
     protected SpriteFont midVol;
     protected SpriteFont HighVol;
     protected SpriteFont smallScreen;
@@ -93,9 +95,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         volumeLevel = new SpriteFont("Volume: ", 490, 210, "Comic Sans", 30, new Color (49, 207,240));
         volumeLevel.setOutlineColor(Color.black);
         volumeLevel.setOutlineThickness(3);
-        lowVol = new SpriteFont("Low ", 370, 245, "Comic Sans", 30, new Color (49, 207,240));
-        lowVol.setOutlineColor(Color.black);
-        lowVol.setOutlineThickness(3);
+        muteVol = new SpriteFont("Mute ", 370, 245, "Comic Sans", 30, new Color (49, 207,240));
+        muteVol.setOutlineColor(Color.black);
+        muteVol.setOutlineThickness(3);
         midVol = new SpriteFont("Medium ", 500, 245, "Comic Sans", 30, new Color (49, 207,240));
         midVol.setOutlineColor(Color.black);
         midVol.setOutlineThickness(3);
@@ -170,17 +172,27 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         }
 
         // setup player
-        this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        //this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.reset();
+        if(character.choseCharacter == 0) {
+            this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.player.setMap(map);
+            this.player.addListener(this);
+            this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        }
+        else if(character.choseCharacter == 1) {
+        	this.player = new Baby(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.player.setMap(map);
+            this.player.addListener(this);
+            this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        }
 
         //        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         if (currentLevel > 0) {
             player.unlockPowerUpOne();
         }
-        this.player.setMap(map);
-        this.player.addListener(this);
-        this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-        this.playLevelScreenState = PlayLevelScreenState.RUNNING;
         keyTimer.setWaitTime(200);
     }
 
@@ -330,7 +342,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 bigScreen.setColor(new Color(49, 207, 240));
                 if(currentSettingLevelHovered == 0)
                 {
-                    lowVol.setColor(new Color(255, 215, 0));
+                    muteVol.setColor(new Color(255, 215, 0));
                     midVol.setColor(new Color(49, 207, 240));
                     HighVol.setColor(new Color(49, 207, 240));
                     pointerLocationX = 330;
@@ -338,7 +350,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 }
                 if(currentSettingLevelHovered == 1)
                 {
-                    lowVol.setColor(new Color(49, 207, 240));
+                    muteVol.setColor(new Color(49, 207, 240));
                     midVol.setColor(new Color(255, 215, 0));
                     HighVol.setColor(new Color(49, 207, 240));
                     pointerLocationX = 470;
@@ -346,7 +358,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 }
                 if(currentSettingLevelHovered == 2)
                 {
-                    lowVol.setColor(new Color(49, 207, 240));
+                    muteVol.setColor(new Color(49, 207, 240));
                     midVol.setColor(new Color(49, 207, 240));
                     HighVol.setColor(new Color(255, 215, 0));
                     pointerLocationX = 640;
@@ -356,7 +368,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             }
             else if (settingsMenuItemSelected == 2 && settingsActive == true)
             {
-                lowVol.setColor(new Color(49, 207, 240));
+                muteVol.setColor(new Color(49, 207, 240));
                 midVol.setColor(new Color(49, 207, 240));
                 HighVol.setColor(new Color(49, 207, 240));
                 aspectActive = true;
@@ -413,7 +425,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                         {
                             if(currentSettingLevelHovered == 0)
                             {
-                                setVolLow();
+                                setVolMute();
                                 settingsActive = false;
                             }
                             if(currentSettingLevelHovered == 1)
@@ -494,7 +506,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             {
                 volumeLevel.draw(graphicsHandler);
                 aspectRatioLevel.draw(graphicsHandler);
-                lowVol.draw(graphicsHandler);
+                muteVol.draw(graphicsHandler);
                 midVol.draw(graphicsHandler);
                 HighVol.draw(graphicsHandler);
                 smallScreen.draw(graphicsHandler);
@@ -512,10 +524,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         return playLevelScreenState;
     }
 
-    public void setVolLow()
+    public void setVolMute()
     {
-        System.out.println("screen vol low");
-        mD.setVolCall("Low");
+        System.out.println("screen vol mute");
+        mD.setVolCall("Mute");
         System.out.println("Current Vol: " + vol);
 
     }

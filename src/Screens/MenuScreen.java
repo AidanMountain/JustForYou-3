@@ -28,6 +28,7 @@ public class MenuScreen extends Screen {
     protected SpriteFont usagePrompt;
     protected SpriteFont settings;
     protected SpriteFont achievements;
+    protected SpriteFont changeCharacter;
     protected Map background;
     protected Player player;
     protected Stopwatch keyTimer = new Stopwatch();
@@ -43,24 +44,27 @@ public class MenuScreen extends Screen {
 
         screenCoordinator.getGameWindow().getInputManager().setKeyLocker(keyLocker);
 
-        playNewGame = new SpriteFont("START NEW GAME", 200, 150, "Comic Sans", 30, new Color(49, 207, 240));
+        playNewGame = new SpriteFont("START NEW GAME", 200, 100, "Comic Sans", 30, new Color(49, 207, 240));
         playNewGame.setOutlineColor(Color.black);
         playNewGame.setOutlineThickness(3);
-        playSavedGame = new SpriteFont("PLAY SAVED GAME", 200, 200, "Comic Sans", 30, new Color(49, 207, 240));
+        playSavedGame = new SpriteFont("PLAY SAVED GAME", 200, 150, "Comic Sans", 30, new Color(49, 207, 240));
         playSavedGame.setOutlineColor(Color.black);
         playSavedGame.setOutlineThickness(3);
-        instructionsMenu = new SpriteFont("INSTRUCTIONS", 200, 250, "Comic Sans", 30, new Color (49, 207,240));
+        instructionsMenu = new SpriteFont("INSTRUCTIONS", 200, 200, "Comic Sans", 30, new Color (49, 207,240));
         instructionsMenu.setOutlineColor(Color.black);
         instructionsMenu.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 200, 300, "Comic Sans", 30, new Color(49, 207, 240));
+        credits = new SpriteFont("CREDITS", 200, 250, "Comic Sans", 30, new Color(49, 207, 240));
         credits.setOutlineColor(Color.black);
         credits.setOutlineThickness(3);
-        settings = new SpriteFont("SETTINGS", 200, 350, "Comic Sans", 30, new Color(49, 207, 240));
+        settings = new SpriteFont("SETTINGS", 200, 300, "Comic Sans", 30, new Color(49, 207, 240));
         settings.setOutlineColor(Color.black);
         settings.setOutlineThickness(3);
-        achievements = new SpriteFont("ACHIEVEMENTS", 200, 400, "Comic Sans", 30, new Color(49, 207, 240));
+        achievements = new SpriteFont("ACHIEVEMENTS", 200, 350, "Comic Sans", 30, new Color(49, 207, 240));
         achievements.setOutlineColor(Color.black);
         achievements.setOutlineThickness(3);
+        changeCharacter = new SpriteFont("CHANGE CHARACTER", 200, 400, "Comic Sans", 30, new Color(49, 207, 240));
+        changeCharacter.setOutlineColor(Color.black);
+        changeCharacter.setOutlineThickness(3);
         
         usagePrompt = new SpriteFont("Use the Arrow Keys and Enter to use the menu", 30, 40, "Times New Roman", 30, Color.white);
         background = new TitleScreenMap();
@@ -85,11 +89,11 @@ public class MenuScreen extends Screen {
         }
 
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
-        if (currentMenuItemHovered > 5) {
+        if (currentMenuItemHovered > 6) {
             currentMenuItemHovered = 0;
         }
         else if (currentMenuItemHovered < 0) {
-            currentMenuItemHovered = 5;
+            currentMenuItemHovered = 6;
         }
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
@@ -99,6 +103,7 @@ public class MenuScreen extends Screen {
             credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
             achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49,207,240));
             pointerLocationX = 170;
             pointerLocationY = (int)playNewGame.getY()-22;
         }
@@ -109,6 +114,7 @@ public class MenuScreen extends Screen {
             credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
             achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49,207,240));
             pointerLocationX = 170;
             pointerLocationY = (int)playSavedGame.getY()-22;
         }
@@ -119,6 +125,7 @@ public class MenuScreen extends Screen {
             credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
             achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49,207,240));
             pointerLocationX = 170;
             pointerLocationY = (int)instructionsMenu.getY()-22;
         }
@@ -129,6 +136,7 @@ public class MenuScreen extends Screen {
             credits.setColor(new Color(255, 215, 0));
             settings.setColor(new Color(49, 207, 240));
             achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49,207,240));
             pointerLocationX = 170;
             pointerLocationY = (int)credits.getY()-22;
         }
@@ -139,6 +147,7 @@ public class MenuScreen extends Screen {
         	credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(255, 215, 0));
             achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(49,207,240));
             pointerLocationX = 170;
             pointerLocationY = (int)settings.getY()-22;
         }
@@ -149,8 +158,20 @@ public class MenuScreen extends Screen {
         	credits.setColor(new Color(49, 207, 240));
             settings.setColor(new Color(49, 207, 240));
             achievements.setColor(new Color(255, 215, 0));
+            changeCharacter.setColor(new Color(49,207,240));
             pointerLocationX = 170;
             pointerLocationY = (int)achievements.getY()-22;
+        }
+        else if(currentMenuItemHovered == 6) {
+            playNewGame.setColor(new Color(49, 207, 240));
+            playSavedGame.setColor(new Color(49, 207, 240));
+        	instructionsMenu.setColor(new Color(49, 207, 240));
+        	credits.setColor(new Color(49, 207, 240));
+            settings.setColor(new Color(49, 207, 240));
+            achievements.setColor(new Color(49, 207, 240));
+            changeCharacter.setColor(new Color(255, 215, 0));
+            pointerLocationX = 170;
+            pointerLocationY = (int)changeCharacter.getY()-22;
         }
             
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
@@ -186,6 +207,9 @@ public class MenuScreen extends Screen {
             else if(menuItemSelected == 5){
                 screenCoordinator.setGameState(GameState.ACHIEVEMENTS);
             }
+            else if(menuItemSelected == 6) {
+            	screenCoordinator.setGameState(GameState.CHARACTER);
+            }
         }
              
     }
@@ -199,6 +223,7 @@ public class MenuScreen extends Screen {
         usagePrompt.draw(graphicsHandler);
         settings.draw(graphicsHandler);
         achievements.draw(graphicsHandler);
+        changeCharacter.draw(graphicsHandler);
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
     }
 
