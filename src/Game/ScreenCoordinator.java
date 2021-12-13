@@ -67,6 +67,9 @@ public class ScreenCoordinator extends Screen {
 					case ACHIEVEMENTS:
 						currentScreen = new AchievementsScreen(this);
 						break;
+					case CHARACTER:
+						currentScreen = new SelectCharacterScreen(this);
+						break;
 				}
 				currentScreen.initialize();
 			}

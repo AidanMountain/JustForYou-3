@@ -46,7 +46,7 @@ public class SettingsScreen extends Screen{
     protected KeyLocker keyLocker = new KeyLocker();
     protected SpriteFont settingsLabel;
     protected SpriteFont aspectRatioLabel, lowRatioLabel, mediumRatioLabel, largeRatioLabel;
-    protected SpriteFont volumeLabel, lowVolumeLabel, mediumVolumeLabel, fullVolumeLabel;
+    protected SpriteFont volumeLabel, muteVolumeLabel, mediumVolumeLabel, fullVolumeLabel;
     protected SpriteFont returnSettingsLabel, usagePrompt;
     protected int currentSettingHovered = 0;
     protected int settingSelected = -1;
@@ -83,9 +83,9 @@ public class SettingsScreen extends Screen{
         volumeLabel = new SpriteFont("Volume:", 205, 125, "Times New Roman", 40, Color.white);
         volumeLabel.setOutlineColor(Color.black);
         volumeLabel.setOutlineThickness(2);
-        lowVolumeLabel = new SpriteFont("Low", 75, 175, "Times New Roman", 30, Color.white);
-        lowVolumeLabel.setOutlineColor(Color.black);
-        lowVolumeLabel.setOutlineThickness(2);
+        muteVolumeLabel = new SpriteFont("Mute", 75, 175, "Times New Roman", 30, Color.white);
+        muteVolumeLabel.setOutlineColor(Color.black);
+        muteVolumeLabel.setOutlineThickness(2);
         mediumVolumeLabel = new SpriteFont("Medium", 225, 175, "Times New Roman", 30, Color.white);
         mediumVolumeLabel.setOutlineColor(Color.black);
         mediumVolumeLabel.setOutlineThickness(2);
@@ -129,7 +129,7 @@ public class SettingsScreen extends Screen{
        
         //sets location for blue square in front of text (pointerLocations)
         if(currentSettingHovered == 0) {
-    		lowVolumeLabel.setColor(Color.yellow);
+    		muteVolumeLabel.setColor(Color.yellow);
     		mediumVolumeLabel.setColor(Color.white);
     		fullVolumeLabel.setColor(Color.white);
     		pointerLocationX = 50;
@@ -139,7 +139,7 @@ public class SettingsScreen extends Screen{
         	largeRatioLabel.setColor(Color.white);
         	}
     	else if(currentSettingHovered == 1) {
-    		lowVolumeLabel.setColor(Color.white);
+    		muteVolumeLabel.setColor(Color.white);
     		mediumVolumeLabel.setColor(Color.yellow);
     		fullVolumeLabel.setColor(Color.white);
     		pointerLocationX = 200;
@@ -149,7 +149,7 @@ public class SettingsScreen extends Screen{
         	largeRatioLabel.setColor(Color.white);
     	}
     	else if(currentSettingHovered == 2) {
-    		lowVolumeLabel.setColor(Color.white);
+    		muteVolumeLabel.setColor(Color.white);
     		mediumVolumeLabel.setColor(Color.white);
     		fullVolumeLabel.setColor(Color.yellow);
     		pointerLocationX = 400;
@@ -165,7 +165,7 @@ public class SettingsScreen extends Screen{
     		largeRatioLabel.setColor(Color.white);
     		pointerLocationX = 50;
             pointerLocationY = 280;
-            lowVolumeLabel.setColor(Color.white);
+            muteVolumeLabel.setColor(Color.white);
         	mediumVolumeLabel.setColor(Color.white);
         	fullVolumeLabel.setColor(Color.white);
     	}
@@ -175,7 +175,7 @@ public class SettingsScreen extends Screen{
     		largeRatioLabel.setColor(Color.white);
     		pointerLocationX = 200;
             pointerLocationY = 280;
-            lowVolumeLabel.setColor(Color.white);
+            muteVolumeLabel.setColor(Color.white);
         	mediumVolumeLabel.setColor(Color.white);
         	fullVolumeLabel.setColor(Color.white);
     	}
@@ -185,7 +185,7 @@ public class SettingsScreen extends Screen{
     		largeRatioLabel.setColor(Color.yellow);
     		pointerLocationX = 400;
             pointerLocationY = 280;
-            lowVolumeLabel.setColor(Color.white);
+            muteVolumeLabel.setColor(Color.white);
         	mediumVolumeLabel.setColor(Color.white);
         	fullVolumeLabel.setColor(Color.white);
     	}
@@ -196,7 +196,7 @@ public class SettingsScreen extends Screen{
         if(!keyLocker.isKeyLocked(Key.ENTER) && Keyboard.isKeyDown(Key.ENTER)) {
         	settingSelected = currentSettingHovered;
         	if(settingSelected == 0) {
-        		setVolLow();
+        		setVolMute();
         	}
         	else if(settingSelected == 1) {
         		setVolMid();
@@ -231,7 +231,7 @@ public class SettingsScreen extends Screen{
 		settingsLabel.draw(graphicsHandler);
 		returnSettingsLabel.draw(graphicsHandler);
 		volumeLabel.draw(graphicsHandler);
-		lowVolumeLabel.draw(graphicsHandler);
+		muteVolumeLabel.draw(graphicsHandler);
 		mediumVolumeLabel.draw(graphicsHandler);
 		fullVolumeLabel.draw(graphicsHandler);
 		aspectRatioLabel.draw(graphicsHandler);
@@ -241,10 +241,10 @@ public class SettingsScreen extends Screen{
 		usagePrompt.draw(graphicsHandler);
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
 	}
-	public void setVolLow()
+	public void setVolMute()
     {
         //System.out.println("screen vol low");
-        mD.setVolCall("Low");
+        mD.setVolCall("Mute");
         //System.out.println("Current Vol: " + vol);
 
     }

@@ -49,8 +49,8 @@ public class MusicData {
 	{
 		switch (volLevel)
 		{
-			case "Low":
-				setVol(0.25, clip);
+			case "Mute":
+				setVol(0.0, clip);
 			break;
 			case "Mid":
 				setVol(0.5, clip);
